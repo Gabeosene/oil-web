@@ -1,5 +1,5 @@
 <!index.astro>
-<html lang="en">
+<astro lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -34,8 +34,12 @@
   </style>
 </head>
 <body>
-  <div id="logo">
-               -j|jj|jj|jj|jj|jj               
+  ---
+---
+
+<div class="boot-logo">
+  <pre><code>{String.raw`
+              -j|jj|jj|jj|jj|jj               
            {|jcOaddaddaddaddaddJc|j{           
         c|cOdaaaaaaaaaaaaaaaaaaaaddOcjj        
       jcOddaaadaaaadaadaadaadaaaaaadddOcj      
@@ -59,8 +63,10 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
       {cJdaaaaadaaaaaadaaaaaaaaaadaadOcj{      
          |cJddaaadaadaaaadaadaaadddOc{         
            {j|cJddddddddddddddaOcj|{           
-               jjjjj|jj|jj|jj|j-                
-  </div>
+               jjjjj|jj|jj|jj|j-      
+`}</code></pre>
+</div>
+
   <div id="terminal"></div>
   <script>
     const lines = [
@@ -120,15 +126,15 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
         typeChar();
       } else {
         setTimeout(() => {
-          window.location.href = "oilpage.html";
+          window.location.href = "oilpage.astro";
         }, 2000);
       }
     }
 
     window.onload = () => {
       typeLine();
-      document.addEventListener("keydown", () => window.location.href = "oilpage.html");
+      document.addEventListener("keydown", () => window.location.href = "oilpage.astro");
     };
   </script>
 </body>
-</html>
+</astro>
