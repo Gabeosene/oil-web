@@ -1,12 +1,17 @@
-<! about.astro >
-<html lang="en">
-<link rel="icon" type="image/svg+xml" href="3-OIL-icon-blue.svg">
-<meta charset="UTF-8" />
+---
+/* oilpage.astro */
+---
+<head>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="color-scheme" content="light dark">
-  <meta name="description" content="Obuda Innovation Laboratory (OIL) – Advancing science and innovation through interdisciplinary research at Obuda University.">
+  <meta name="color-scheme" content="light dark" />
+  <meta name="description" content="Obuda Innovation Laboratory (OIL) – Advancing science and innovation through interdisciplinary research at Obuda University." />
   <title>Obuda Innovation Laboratory (OIL)</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Make sure these files are in /public -->
+  <link rel="icon" type="image/svg+xml" href="/3-OIL-icon-blue.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+
   <style>
     :root {
       --bg: #f5f7fa;
@@ -66,6 +71,7 @@
       color: white;
       font-size: 1.5rem;
       margin-left: auto;
+      cursor: pointer;
     }
     nav {
       display: flex;
@@ -195,117 +201,118 @@
     }
   </style>
 </head>
-<body>
-  <header>
-    <img src="3-OIL-icon-blue.svg" alt="OIL Logo">
-    <h1>Obuda Innovation Laboratory (OIL)</h1>
-  </header>
 
-  <nav id="navbar" role="navigation" aria-label="Main Navigation">
-    <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle navigation">☰</button>
-    <a href="#about">About</a>
-    <a href="#research">Research</a>
-    <a href="#projects">Projects</a>
-    <a href="#contact">Contact</a>
-  </nav>
+<header>
+  <img src="/3-OIL-icon-blue.svg" alt="OIL Logo" />
+  <h1>Obuda Innovation Laboratory (OIL)</h1>
+</header>
 
-  <section class="hero">
-    <h2 id="typewriter"></h2>
-    <p>At OIL, we drive scientific progress by fostering creativity and collaboration in cutting-edge research.</p>
-    <a href="#projects" class="cta">Explore Projects</a>
-  </section>
+<nav id="navbar" role="navigation" aria-label="Main Navigation">
+  <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle navigation" aria-controls="navbar">☰</button>
+  <a href="#about">About</a>
+  <a href="#research">Research</a>
+  <a href="#projects">Projects</a>
+  <a href="#contact">Contact</a>
+</nav>
 
-  <section id="about" class="section">
-    <h3>About Us</h3>
-    <p>The Obuda Innovation Laboratory (OIL) is a multidisciplinary research and development center focused on advancing science, technology, and engineering. Based at Obuda University, we bring together experts and students to solve real-world problems through innovative solutions.</p>
-  </section>
+<section class="hero">
+  <h2 id="typewriter"></h2>
+  <p>At OIL, we drive scientific progress by fostering creativity and collaboration in cutting-edge research.</p>
+  <a href="#projects" class="cta">Explore Projects</a>
+</section>
 
-  <section id="research" class="section">
-    <h3>Our Research</h3>
-    <p>Our research spans areas such as artificial intelligence, robotics, renewable energy, and biomedical engineering. We aim to bridge academia and industry by applying research findings to practical applications that improve lives.</p>
-  </section>
+<section id="about" class="section">
+  <h3>About Us</h3>
+  <p>The Obuda Innovation Laboratory (OIL) is a multidisciplinary research and development center focused on advancing science, technology, and engineering. Based at Obuda University, we bring together experts and students to solve real-world problems through innovative solutions.</p>
+</section>
 
-  <section id="projects" class="section">
-    <h3>Projects</h3>
-    <div class="projects-grid">
-      <div class="project-card">
-        <h4>Smart Mobility AI</h4>
-        <p>Autonomous vehicle system powered by real-time object detection and route optimization.</p>
-      </div>
-      <div class="project-card">
-        <h4>Green Energy Analytics</h4>
-        <p>AI-based models to predict and optimize solar and wind energy production.</p>
-      </div>
-      <div class="project-card">
-        <h4>Medical Robotics</h4>
-        <p>Robotic arms used in precise surgical procedures with haptic feedback integration.</p>
-      </div>
+<section id="research" class="section">
+  <h3>Our Research</h3>
+  <p>Our research spans areas such as artificial intelligence, robotics, renewable energy, and biomedical engineering. We aim to bridge academia and industry by applying research findings to practical applications that improve lives.</p>
+</section>
+
+<section id="projects" class="section">
+  <h3>Projects</h3>
+  <div class="projects-grid">
+    <div class="project-card">
+      <h4>Smart Mobility AI</h4>
+      <p>Autonomous vehicle system powered by real-time object detection and route optimization.</p>
     </div>
-  </section>
-
-  <section id="contact" class="section">
-    <h3>Contact Us</h3>
-    <p>Email: contact@oil-obuda.hu<br />
-       Address: Obuda University, Budapest, Hungary<br />
-       Phone: +36 1 666 6666</p>
-  </section>
-
-  <footer>
-    <p>&copy; 2025 Obuda Innovation Laboratory. All rights reserved.</p>
-    <div>
-      <a href="#">LinkedIn</a>
-      <a href="#">GitHub</a>
-      <a href="#">Facebook</a>
+    <div class="project-card">
+      <h4>Green Energy Analytics</h4>
+      <p>AI-based models to predict and optimize solar and wind energy production.</p>
     </div>
-  </footer>
+    <div class="project-card">
+      <h4>Medical Robotics</h4>
+      <p>Robotic arms used in precise surgical procedures with haptic feedback integration.</p>
+    </div>
+  </div>
+</section>
 
-  <button id="scrollTopBtn" onclick="scrollToTop()" aria-label="Scroll to top">↑</button>
+<section id="contact" class="section">
+  <h3>Contact Us</h3>
+  <p>Email: contact@oil-obuda.hu<br />
+     Address: Obuda University, Budapest, Hungary<br />
+     Phone: +36 1 666 6666</p>
+</section>
 
-  <script>
-    function toggleMenu() {
-      document.getElementById('navbar').classList.toggle('open');
-    }
+<footer>
+  <p>&copy; 2025 Obuda Innovation Laboratory. All rights reserved.</p>
+  <div>
+    <a href="#">LinkedIn</a>
+    <a href="#">GitHub</a>
+    <a href="#">Facebook</a>
+  </div>
+</footer>
 
-    window.onscroll = function () {
-      const links = document.querySelectorAll("nav a");
-      const sections = document.querySelectorAll("section.section");
-      const scrollY = window.pageYOffset;
+<button id="scrollTopBtn" onclick="scrollToTop()" aria-label="Scroll to top">↑</button>
 
-      sections.forEach((section) => {
-        const top = section.offsetTop - 120;
-        const bottom = top + section.offsetHeight;
-        const id = section.getAttribute("id");
-        if (scrollY >= top && scrollY < bottom) {
-          links.forEach(link => link.classList.remove("active"));
-          const activeLink = document.querySelector(`nav a[href='#${id}']`);
-          if (activeLink) activeLink.classList.add("active");
-        }
-      });
+<script is:inline>
+  function toggleMenu() {
+    document.getElementById('navbar').classList.toggle('open');
+  }
 
-      document.getElementById("scrollTopBtn").style.display = scrollY > 300 ? "block" : "none";
-    };
+  window.onscroll = function () {
+    const links = document.querySelectorAll("nav a");
+    const sections = document.querySelectorAll("section.section");
+    const scrollY = window.pageYOffset;
 
-    function scrollToTop() {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    const text = "Empowering Innovation through Research";
-    let i = 0;
-    function typeWriter() {
-      if (i < text.length) {
-        document.getElementById("typewriter").innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typeWriter, 50);
+    sections.forEach((section) => {
+      const top = section.offsetTop - 120;
+      const bottom = top + section.offsetHeight;
+      const id = section.getAttribute("id");
+      if (scrollY >= top && scrollY < bottom) {
+        links.forEach(link => link.classList.remove("active"));
+        const activeLink = document.querySelector(`nav a[href='#${id}']`);
+        if (activeLink) activeLink.classList.add("active");
       }
+    });
+
+    document.getElementById("scrollTopBtn").style.display = scrollY > 300 ? "block" : "none";
+  };
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  const text = "Empowering Innovation through Research";
+  let i = 0;
+  function typeWriter() {
+    if (i < text.length) {
+      document.getElementById("typewriter").textContent += text.charAt(i);
+      i++;
+      setTimeout(typeWriter, 50);
     }
-    window.onload = typeWriter;
-    // Rotating title tag every 5 seconds
-    const titles = ["Obuda Innovation Laboratory", "OIL"];
-    let titleIndex = 0;
-    setInterval(() => {
-      document.title = titles[titleIndex % titles.length];
-      titleIndex++;
-    }, 3000);
+  }
+  window.onload = () => {
+    typeWriter();
+  };
+
+  // Rotate title every 3 seconds
+  const titles = ["Obuda Innovation Laboratory", "OIL"];
+  let titleIndex = 0;
+  setInterval(() => {
+    document.title = titles[titleIndex % titles.length];
+    titleIndex++;
+  }, 3000);
 </script>
-</body>
-</html>
