@@ -1,50 +1,134 @@
----
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
----
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to build
-				a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to <a href="https://docs.astro.build/"
-					>read the docs
-				</a> or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out <a
-					href="https://github.com/Charca/astro-blog-template"
-					>astro-blog-template
-				</a> by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Obuda Innovation Laboratory (OIL) – Advancing science and innovation through interdisciplinary research at Obuda University.">
+  <title>Obuda Innovation Laboratory</title>
+  <link rel="icon" type="image/svg+xml" href="3-OIL-icon-blue.svg">
+  <link rel="icon" type="image/png" href="3-OIL-icon-blue.png">
+  <link rel="shortcut icon" href="3-OIL-icon-blue.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Courier New', Courier, monospace;
+      background: black;
+      color: #cccccc;
+    }
+    #logo {
+      white-space: pre;
+      padding: 2rem;
+      font-size: 0.7rem;
+    }
+    #terminal {
+      white-space: pre-line;
+      padding: 2rem;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="logo">
+               -j|jj|jj|jj|jj|jj               
+           {|jcOaddaddaddaddaddJc|j{           
+        c|cOdaaaaaaaaaaaaaaaaaaaaddOcjj        
+      jcOddaaadaaaadaadaadaadaaaaaadddOcj      
+     jOddaaaaaaadaM@@@@@@@@@MadaaaaaaaddO|     
+   |cOdaaaadaaaa@@@@       @@@@adaaaaaaadOJ    
+   Jaaaaadaaada@@@           @@@aadaadaaaaaO   
+ JOdaaadaaaaaaM@j  @@@@@@@@@  J@MaaaaaadaaadOJ 
+ jdaadaaaadaaa@@  @@@aaaaa@@@  @@aadaaaaadaadj 
+{Oaaaaaadaaada@   @aaaOILdaM@  "@aaaadaaaaaaaO|
+jdaadaaaaaaaaa@@  @@Maaaaa@@@  @@adaaaadaadaadj
+jdaaaadaadaaad@@   @@@@@@@@@   @@aaadaaaaaaaadj
+jdaaaaaaaaadaaa@@@    -@-    @@@adaaaadaadaaadj
+jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
+|daaaaaaadaadaaaaa@@@@@@@@@@@aadaaaaadaadaaaaa|
+|Odaadaaaaaaaaadaa@         @aaaadaaaaaaaadadO{
+ jdaaaadaadaadaaad@@@@@@@@@@@adaaaadaadaaaaadc 
+ cJdaaaaaaaaaaaaaa@         @aaadaaaaaaadaadOJ 
+  dJdaaadaadaadaaa@  @@@@@@@@aaaaadaadaaaddOj  
+    cOdaaaaaaaaada@  @aaaaaaadaaaaaaaaaddOc|   
+     jOdaadaadaaaa@@@@aadaadaaadaaadaaddOj     
+      {cJdaaaaadaaaaaadaaaaaaaaaadaadOcj{      
+         |cJddaaadaadaaaadaadaaadddOc{         
+           {j|cJddddddddddddddaOcj|{           
+               jjjjj|jj|jj|jj|j-                
+  </div>
+  <div id="terminal"></div>
+  <script>
+    const lines = [
+      "",
+      "Initializing Obuda Innovation Laboratory OS...",
+      "Press any key to skip booting...",
+      "[System BIOS Check]...",
+      "[✔] CPU Ready",
+      "[✔] RAM OK",
+      "[✔] Storage Drives Mounted",
+      "[✔] Network Connection Secure",
+      "",
+      "[Booting OIL Framework]...",
+      "↳ Initializing research modules...",
+      "↳ Calibrating sensor arrays...",
+      "↳ Loading machine learning models...",
+      "↳ Checking innovation pipelines...",
+      "↳ Verifying academic credentials...",
+      "",
+      "[Authenticating to Obuda University Network]...",
+      "Username: OIL_user",
+      "Password: *********",
+      "[✔] Authentication success",
+      "",
+      "[Establishing session with university brain node]...",
+      "↳ Link stable.",
+      "↳ Uplink synchronized.",
+      "",
+      "[Launching main interface]...",
+      "System ready. Welcome to the Obuda Innovation Laboratory (OIL)."
+    ];
+
+    const terminal = document.getElementById("terminal");
+    let lineIndex = 0;
+
+    function getRandomDelay(min = 10, max = 35) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function typeLine() {
+      if (lineIndex < lines.length) {
+        const line = lines[lineIndex];
+        const lineElement = document.createElement("div");
+        terminal.appendChild(lineElement);
+
+        let charIndex = 0;
+        function typeChar() {
+          if (charIndex < line.length) {
+            lineElement.textContent += line.charAt(charIndex);
+            charIndex++;
+            setTimeout(typeChar, getRandomDelay());
+          } else {
+            lineIndex++;
+            setTimeout(typeLine, getRandomDelay(300, 800));
+          }
+        }
+        typeChar();
+      } else {
+        setTimeout(() => {
+          window.location.href = "oilpage.html";
+        }, 2000);
+      }
+    }
+
+    window.onload = () => {
+      typeLine();
+      document.addEventListener("keydown", () => window.location.href = "oilpage.html");
+    };
+  </script>
+</body>
 </html>
