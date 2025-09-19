@@ -76,6 +76,7 @@ const newsFeed = [
   //  status: "Infrastructure",
   //},
 ];
+
 ---
 
 <main>
@@ -196,9 +197,10 @@ const newsFeed = [
       <section aria-label="Join our newsletter">
         <h3>Join our newsletter</h3>
         <p>Receive lab bulletins, project calls, and event invitations straight to your inbox.</p>
-      <form action="https://script.google.com/macros/s/AKfycbyeYmHt2kCQ4ybemI62-7kmbJIFNVIKtKj-wC3ot7eCsDGXg5nmYMWaG0XGfcMGOpGkMg/exec" method="post">
-        <input type="email" name="email" placeholder="oil@oil-obuda.hu" required>
-      <button type="submit">Subscribe</button>
+      <form id="signup-form">
+        <input type="email" name="email" placeholder="oil@oil-obuda.hu" required />
+        <button id="signup-btn" type="submit">Subscribe</button>
+        <span id="signup-msg" aria-live="polite" style="margin-left:.5rem;"></span>
       </form>
 
       </section>
@@ -220,6 +222,38 @@ const newsFeed = [
   OIL 2025: All rights reserved
 </footer>
 </main>
+<script>
+  const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyeYmHt2kCQ4ybemI62-7kmbJIFNVIKtKj-wC3ot7eCsDGXg5nmYMWaG0XGfcMGOpGkMg/exec'; // from Apps Script deployment
+
+  const form = document.getElementById('signup-form');
+  const btn  = document.getElementById('signup-btn');
+  const msg  = document.getElementById('signup-msg');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();                 // stop page navigation
+    const original = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+
+    try {
+      // Use no-cors to avoid CORS headaches with Apps Script
+      await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: new FormData(form)
+      });
+
+      btn.textContent = 'Subscribed!';
+      msg.textContent = 'Thanks!';
+      form.reset();
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = original;
+      msg.textContent = 'Something went wrong. Please try again.';
+      console.error(err);
+    }
+  });
+</script>
 
 <script>
   if (typeof window !== "undefined") {
