@@ -299,9 +299,18 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
     <section aria-label="Follow us">
       <h3>Follow us</h3>
       <ul>
-        <li><a href="https://www.linkedin.com/company/obuda-innovation-laboratory/" target="_blank" rel="noreferrer">LinkedIn</a></li>
-        <li><a href="https://www.instagram.com/oil_banki/?hl=en" target="_blank" rel="noreferrer">Instagram</a></li>
-        <li><a href="https://www.youtube.com" target="_blank" rel="noreferrer">YouTube</a></li>
+        <li>
+          <a href="https://www.linkedin.com/company/obuda-innovation-laboratory/"
+             target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </li>
+        <li>
+          <a href="https://www.instagram.com/oil_banki/?hl=en"
+             target="_blank" rel="noopener noreferrer">Instagram</a>
+        </li>
+        <li>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdx4pLc4U_tc6f43EmEr5PYv8chOBxufopI2WGBb9e36x5uYw/viewform?usp=sharing&ouid=106583092023257242650"
+             target="_blank" rel="noopener noreferrer">Join Form</a>
+        </li>
       </ul>
     </section>
 
@@ -326,10 +335,12 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
     <section class="footer-newsletter" aria-label="Join our newsletter">
       <h3>Join our newsletter</h3>
       <p>Receive lab bulletins, project calls, and event invitations straight to your inbox.</p>
-      <form id="signup-form" novalidate>
-        <input type="email" name="email" placeholder="oil@oil-obuda.hu" required />
+      <!-- note data-ajax hook (no navigation), and action kept empty -->
+      <form id="signup-form" data-ajax novalidate>
+        <input type="email" name="email" placeholder="oil@oil-obuda.hu" required inputmode="email" />
         <button id="signup-btn" type="submit">Subscribe</button>
-        <span id="signup-msg" aria-live="polite" style="margin-left:.5rem;"></span>
+        <!-- give this a fixed space to avoid layout shifts -->
+        <span id="signup-msg" aria-live="polite" style="display:inline-block; min-width:8ch; margin-left:.5rem;"></span>
       </form>
     </section>
   </div>
@@ -337,31 +348,40 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
   <!-- bottom bar -->
   <div class="site-footer__bar" role="contentinfo">
     <p>OIL 2025: All rights reserved</p>
-    <p>Version 2.6.1</p>
+    <p>Version 2.7.1</p>
   </div>
 </footer>
 
 </main>
 
 <script>
-  // Apps Script endpoint
+  // Avoid scroll restoration side-effects on SPA-ish nav
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+
   const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyeYmHt2kCQ4ybemI62-7kmbJIFNVIKtKj-wC3ot7eCsDGXg5nmYMWaG0XGfcMGOpGkMg/exec';
 
-  // Prevent dummy anchors (# or empty) from jumping to top anywhere on the page
-  document.addEventListener('click', (e) => {
-    const a = e.target.closest('a[href="#"], a[href=""]');
-    if (a) e.preventDefault();
-  }, { passive: false });
+  // 1 Kill jumps from dummy anchors anywhere on the page
+  const stopJump = (e) => {
+    const a = e.target.closest && e.target.closest('a[href="#"], a[href=""]');
+    if (a) { e.preventDefault(); e.stopPropagation(); return false; }
+  };
+  document.addEventListener('click', stopJump, { passive: false });
+  document.addEventListener('touchstart', stopJump, { passive: false });
 
+  // 2 AJAX the signup form (no navigation), also iOS-safe blur to prevent snap
   const form = document.getElementById('signup-form');
   const btn  = document.getElementById('signup-btn');
   const msg  = document.getElementById('signup-msg');
 
   if (form && btn && msg) {
     form.addEventListener('submit', async (e) => {
-      e.preventDefault(); // stop navigation/reload
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation?.();
 
-      // iOS Safari: blur active field to avoid scroll jump when keyboard closes
+      // iOS Safari: blur the active element (closing keyboard can snap viewport)
       if (document.activeElement && document.activeElement.blur) {
         document.activeElement.blur();
       }
@@ -374,9 +394,9 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
       try {
         await fetch(FORM_ENDPOINT, {
           method: 'POST',
-          mode: 'no-cors',         // Apps Script friendly
+          mode: 'no-cors',
           body: new FormData(form),
-          keepalive: true          // helps mobile/background submits
+          keepalive: true
         });
 
         btn.textContent = 'Subscribed!';
@@ -385,15 +405,29 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
       } catch (err) {
         btn.disabled = false;
         btn.textContent = original;
-        msg.textContent = 'Something went wrong. Please try again.';
+        msg.textContent = 'Error. Try again?';
         console.error(err);
       } finally {
-        // Re-enable button after a short delay (optional UX)
         setTimeout(() => { btn.disabled = false; }, 1200);
       }
-    });
+    }, { capture: true }); // capture helps beat other handlers that might navigate
   }
+
+  // 3 Guard against accidental hash changes (e.g., code elsewhere sets location.hash)
+  window.addEventListener('hashchange', (e) => {
+    if (!location.hash) return; // ignore normal cases
+    // If hash target doesn't exist, prevent the default scroll-to-top jump
+    const id = location.hash.slice(1);
+    if (!document.getElementById(id)) {
+      e.preventDefault?.();
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+  });
+
+  // 4 Reserve space prevents CLS-based snaps; also good to disable anchoring in footer
+  document.querySelector('.site-footer')?.style.setProperty('overflow-anchor', 'none');
 </script>
+
 
 <script>
   if (typeof window !== "undefined") {
