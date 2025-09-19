@@ -465,6 +465,9 @@ footer { display: flex; justify-content: space-between; font-size: 0.75rem; colo
     grid-column: 1; /* full width by default when single column */
   }
 }
+.footer-logo { width: 140px; height: auto; }
+.site-footer img { display: block; max-width: 100%; }
+
 
 /* Optional: debug any rogue overflow while testing */
 /* body * { outline: 1px dashed rgba(255,255,255,.08); } */
