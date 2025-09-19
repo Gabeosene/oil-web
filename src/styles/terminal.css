@@ -33,7 +33,7 @@ p  { margin: 0.6em 0; }
 .hero {
   display: grid;
   align-items: center;
-  min-height: 50svh;
+  min-height: 50svh; /* safe small viewport height */
   padding: clamp(1rem, 4vw, 3rem);
   gap: 1rem;
 }
@@ -60,31 +60,47 @@ p  { margin: 0.6em 0; }
   --accent-gold-strong: #cfa819;
 }
 
+/* Viewport stability */
+html {
+  height: -webkit-fill-available;  /* iOS Safari */
+  scroll-behavior: auto;           /* avoid smooth-scroll side effects */
+}
+
 /* Base */
 body {
-  min-height: 100vh;
+  /* no flex-centering, let page flow naturally */
+  display: block;
+
+  /* stable viewport units */
+  min-height: 100svh;              /* safe small viewport height */
+  min-height: 100dvh;              /* modern dynamic viewport height */
+
   background:
     radial-gradient(circle at top left, rgba(var(--accent-rgb), 0.18), transparent 60%),
     radial-gradient(circle at bottom right, rgba(var(--accent-gold-rgb), 0.08), transparent 55%),
     linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
   color: var(--text);
   font-family: "Consolas", "Courier New", monospace;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(1.5rem, 5vw, 3rem);
+
+  /* vertical breathing room without coupling to viewport height */
+  padding: clamp(1rem, 4vw, 2rem) 0;
+
+  /* mobile stability */
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior-y: contain;
 }
 
-/* Main card */
+/* Main card (centered horizontally only) */
 main {
   width: min(60rem, 100%);
+  margin-inline: auto;
   display: grid;
   gap: clamp(1.5rem, 4vw, 2.5rem);
   position: relative;
   background: var(--surface);
   border: 1px solid var(--accent-gold-strong);
   border-radius: 0.75rem;
-  padding: clamp(1.75rem, 5vw, 2.75rem);
+  padding: clamp(1.5rem, 5vw, 2.75rem);
   box-shadow: 0 0 1.5rem var(--bg-glow);
 }
 
@@ -139,6 +155,8 @@ main {
   height: 3.5rem;
   max-width: 90vw;
   overflow: hidden;
+
+  /* critical: only disable anchoring here */
   overflow-anchor: none;
   contain: layout paint;
 }
@@ -200,9 +218,6 @@ pre {
 
 /* Small title */
 h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
-
-/* REMOVE global footer rule to avoid conflicts */
-/* footer { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); } */
 
 /* A11y */
 .sr-only {
@@ -360,6 +375,9 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   box-shadow: 0 0.6rem 1.2rem rgba(var(--accent-gold-rgb), 0.28), 0 0.35rem 0.75rem rgba(var(--accent-gold-rgb), 0.16);
 }
 
+/* Reserve space for live status to prevent CLS */
+#signup-msg { display:inline-block; min-width:8ch; min-height:1em; overflow-anchor: none; }
+
 /* Bottom bar */
 .site-footer__bar {
   margin-top: 1rem;
@@ -380,7 +398,7 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   .news-feed__list li { padding: 0.9rem 0.95rem; }
   .news-feed__list article header { flex-direction: column; align-items: flex-start; }
 
-  /* Keep clock out of flow on mobile too */
+  /* keep clock out of flow on mobile too */
   .system-clock { /* no overrides */ }
 
   .site-footer__grid { grid-template-columns: 1fr; }
@@ -427,9 +445,8 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   color: var(--accent-gold-strong);
 }
 
-/* Images sizing + anchoring guard */
+/* Footer images sizing */
 .site-footer img { display: block; max-width: 100%; }
-html, body, main, .site-footer { overflow-anchor: none; }
 
 /* Optional: debug rogue overflow */
 /* body * { outline: 1px dashed rgba(255,255,255,.08); } */
