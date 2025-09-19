@@ -33,7 +33,7 @@ p  { margin: 0.6em 0; }
 .hero {
   display: grid;
   align-items: center;
-  min-height: 50svh; /* safe small viewport height */
+  min-height: 50svh;
   padding: clamp(1rem, 4vw, 3rem);
   gap: 1rem;
 }
@@ -59,53 +59,38 @@ p  { margin: 0.6em 0; }
   --accent-gold-rgb: 207, 168, 25;
   --accent-gold-strong: #cfa819;
 
-  /* clock height (used to reserve header space on desktop) */
   --clock-h: 3.5rem;
 }
 
-/* Viewport & scroll stability */
+/* Viewport & scroll stability + full background */
 html {
-  height: -webkit-fill-available;  /* iOS Safari */
-  scroll-behavior: auto;           /* avoid smooth-scroll side effects */
-  overscroll-behavior-y: auto;     /* restore native pull-to-refresh */
-  scrollbar-gutter: stable both-edges; /* prevent layout shift when scrollbar appears */
+  height: -webkit-fill-available;
+  scroll-behavior: auto;
+  overscroll-behavior-y: auto;
+  scrollbar-gutter: stable both-edges;
 
-  /* full-bleed background on root to avoid edge gaps */
   background:
     radial-gradient(1200px 600px at 50% -10%, rgba(var(--accent-rgb), .18), transparent 60%),
+    radial-gradient(1200px 800px at 100% 110%, rgba(var(--accent-gold-rgb), .12), transparent 65%),
     linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
   background-repeat: no-repeat;
-  background-attachment: fixed, fixed;
-  background-size: cover, auto;
-  background-position: center, center;
+  background-attachment: fixed, fixed, fixed;
+  background-size: cover, cover, auto;
+  background-position: center, center, top;
 }
 
-/* Base */
+/* Base body */
 body {
-  /* no flex-centering, let page flow naturally */
-  display: block;
-
-  /* stable viewport units */
-  min-height: 100svh;              /* safe small viewport height */
-}
-@supports not (min-height: 100svh) {
-  body { min-height: 100vh; }      /* fallback for older browsers */
-}
-body {
-  /* keep body transparent so html bg is visible edge-to-edge */
-  background: transparent;
+  min-height: 100svh;
+  background: transparent; /* show html bg */
   color: var(--text);
   font-family: "Consolas", "Courier New", monospace;
-
-  /* vertical breathing room without coupling to viewport height */
   padding: clamp(1rem, 4vw, 2rem) 0;
-
-  /* mobile stability */
   -webkit-text-size-adjust: 100%;
-  overscroll-behavior-y: auto;     /* restore PTR on body as well */
+  overscroll-behavior-y: auto;
 }
 
-/* Main card (centered horizontally only) */
+/* Main card */
 main {
   width: min(60rem, 100%);
   margin-inline: auto;
@@ -153,14 +138,12 @@ main {
   20%, 24%, 55% { opacity: 0.6; }
 }
 
-/* ---- SYSTEM CLOCK (no overlap with ASCII) ---- */
-/* Desktop/tablet: keep absolute and reserve space above header */
+/* System clock */
 .system-clock {
   position: absolute;
   top: clamp(0.75rem, 4vw, 1.5rem);
   right: clamp(0.75rem, 4vw, 1.5rem);
   z-index: 3;
-
   display: grid;
   grid-auto-rows: 1fr;
   gap: 0.5rem;
@@ -173,12 +156,9 @@ main {
   height: var(--clock-h);
   max-width: 90vw;
   overflow: hidden;
-
-  /* keep out of flow anchoring (correct for fixed/abs widgets) */
   overflow-anchor: none;
   contain: layout paint;
 }
-/* Reserve vertical room so header ASCII never sits under the clock */
 header { padding-top: calc(var(--clock-h) + 0.75rem); }
 
 .system-clock__row {
@@ -198,14 +178,17 @@ header { padding-top: calc(var(--clock-h) + 0.75rem); }
 }
 .system-clock time {
   display: inline-block;
-  min-width: 8ch;      /* HH:MM:SS */
+  min-width: 8ch;
   text-align: right;
   color: var(--text-strong);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
-/* Code/pre (global). ASCII blocks have their own class below. */
+/* Header */
+header { display: flex; flex-direction: column; gap: 0.75rem; }
+
+/* Pre/ASCII */
 pre {
   margin: 0;
   font-size: clamp(0.9rem, 2.3vw, 1.1rem);
@@ -252,8 +235,6 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   padding: 0.85rem 1.1rem;
   transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 0 0.9rem rgba(var(--accent-rgb), 0.12);
-
-  /* allow scroll anchoring here so the page doesn't jump */
   overflow-anchor: auto;
 }
 .info-panels details[open] {
@@ -265,7 +246,7 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   list-style: none; display: flex; align-items: center; justify-content: space-between;
   gap: 1rem; cursor: pointer; color: var(--text-strong);
   font-size: clamp(0.95rem, 2.1vw, 1.05rem); letter-spacing: 0.08em; text-transform: uppercase;
-  scroll-margin-top: 0;           /* avoid auto centering on focus */
+  scroll-margin-top: 0;
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -339,21 +320,19 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   font-size: clamp(0.85rem, 2vw, 0.95rem); line-height: 1.6;
 }
 
-/* Footer sections */
+/* Footer */
 .site-footer {
   position: relative;
   display: grid;
   gap: clamp(1.2rem, 3vw, 1.8rem);
   padding-top: 1.5rem;
   border-top: 1px solid rgba(var(--accent-gold-rgb), 0.25);
-  /* prevent footer height changes from re-anchoring scroll */
   overflow-anchor: none;
 }
 .site-footer__status { display: flex; align-items: baseline; gap: 0.75rem; font-size: clamp(0.75rem, 2vw, 0.85rem); letter-spacing: 0.18em; color: var(--text-muted); }
 .status-label { color: var(--accent-gold-strong); }
 .status-value { text-transform: uppercase; }
 
-/* 3 columns: make middle (logo) auto width to reduce empty space */
 .site-footer__grid {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -370,10 +349,8 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   margin: 0; font-style: normal; color: var(--text-muted);
   line-height: 1.6; font-size: clamp(0.8rem, 2vw, 0.9rem);
 }
-
 .footer-logo-wrap { display: flex; align-items: center; justify-content: center; }
 .footer-logo { width: 140px; height: auto; display: block; }
-
 .footer-newsletter { grid-column: 1 / -1; }
 
 .site-footer form { display: grid; gap: 0.55rem; }
@@ -401,15 +378,12 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   box-shadow: 0 0.6rem 1.2rem rgba(var(--accent-gold-rgb), 0.28), 0 0.35rem 0.75rem rgba(var(--accent-gold-rgb), 0.16);
 }
 
-/* Reserve space for live status to prevent CLS */
+/* Reserve space for live status */
 #signup-msg {
   display:inline-block; min-width:8ch; min-height:1em;
-
-  /* allow scroll anchoring so viewport stays put on updates */
   overflow-anchor: auto;
 }
 
-/* Bottom bar */
 .site-footer__bar {
   margin-top: 1rem;
   padding-top: 1rem;
@@ -422,26 +396,21 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
 /* Mobile adjustments */
 @media (max-width: 40rem) {
   main { border-radius: 0.5rem; padding: clamp(1.25rem, 8vw, 2rem); }
-
-  /* On small screens, make clock inline and remove reserved header padding */
   .system-clock {
     position: static;
     height: auto;
-    margin: 0 0 0.75rem auto; /* keeps it right-aligned */
+    margin: 0 0 0.75rem auto;
   }
   header { padding-top: 0; }
-
   .boot-log li { grid-template-columns: 1fr; gap: 0.4rem; }
   .boot-log span { padding-left: 0; }
   .boot-log span::before { display: none; }
-
   .news-feed__list li { padding: 0.9rem 0.95rem; }
   .news-feed__list article header { flex-direction: column; align-items: flex-start; }
-
   .site-footer__grid { grid-template-columns: 1fr; }
 }
 
-/* ASCII blocks (shape-preserving) */
+/* ASCII */
 .ascii {
   font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
   white-space: pre;
@@ -454,8 +423,6 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   font-feature-settings: "liga" 0, "calt" 0;
 }
 .ascii-wrap { max-width: 100%; }
-
-/* Fit-to-border ASCII */
 .fit-container { display: flex; justify-content: center; }
 .ascii-fit-border {
   font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
@@ -482,11 +449,7 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   color: var(--accent-gold-strong);
 }
 
-/* Footer images sizing */
 .site-footer img { display: block; max-width: 100%; }
 
-/* Global: disable accidental scroll snapping anywhere */
+/* Disable accidental scroll snap */
 * { scroll-snap-type: none !important; }
-
-/* Optional: debug rogue overflow */
-/* body * { outline: 1px dashed rgba(255,255,255,.08); } */

@@ -347,67 +347,63 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
         <p>
           Receive lab bulletins, project calls, and event invitations straight to your inbox.
         </p>
-        <form id="signup-form" data-ajax novalidate>
-          <input
-            type="email"
-            name="email"
-            placeholder="oil@oil-obuda.hu"
-            required
-            inputmode="email"
-            autocomplete="email"
-          />
-          <button id="signup-btn" type="submit">Subscribe</button>
-          <span
-            id="signup-msg"
-            aria-live="polite"
-            style="display:inline-block; min-width:8ch; margin-left:.5rem;"
-          ></span>
-        </form>
-      </section>
-    </div>
+<!-- HTML with inline error span -->
+<form id="signup-form" data-ajax novalidate>
+  <input
+    id="signup-email"
+    type="email"
+    name="email"
+    placeholder="oil@oil-obuda.hu"
+    required
+    inputmode="email"
+    autocomplete="email"
+  />
+  <button id="signup-btn" type="submit" disabled>Subscribe</button>
+  <span id="signup-msg" aria-live="polite" style="display:inline-block; min-width:8ch; margin-left:.5rem;"></span>
+  <div id="signup-error" style="color:#ff6b6b; font-size:0.8rem; margin-top:0.4rem;"></div>
+</form>
 
-    <div class="site-footer__bar" role="contentinfo">
-      <p>OIL 2025: All rights reserved</p>
-      <p>Version 3.7.1</p>
-    </div>
-  </footer>
-</main>
-
-<!-- Anti-jump and newsletter JS -->
 <script is:inline>
-  // Let the browser manage scroll position normally
-  if ('scrollRestoration' in history) history.scrollRestoration = 'auto';
-
-  // Detect touch scrolling (used to pause non-critical UI updates)
-  let _isTouchScrolling = false;
-  addEventListener('touchstart', () => { _isTouchScrolling = true; }, { passive: true });
-  addEventListener('touchend',   () => { setTimeout(() => _isTouchScrolling = false, 250); }, { passive: true });
-
   const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyeYmHt2kCQ4ybemI62-7kmbJIFNVIKtKj-wC3ot7eCsDGXg5nmYMWaG0XGfcMGOpGkMg/exec';
 
-  // Kill jumps from dummy anchors (use click only; avoid global non-passive touchstart)
-  const stopJump = (e) => {
-    const a = e.target.closest && e.target.closest('a[href="#"], a[href=""]');
-    if (a) { e.preventDefault(); e.stopPropagation(); return false; }
+  const form  = document.getElementById('signup-form');
+  const email = document.getElementById('signup-email');
+  const btn   = document.getElementById('signup-btn');
+  const msg   = document.getElementById('signup-msg');
+  const err   = document.getElementById('signup-error');
+
+  const validate = () => {
+    if (!email.value.trim()) {
+      err.textContent = '';
+      btn.disabled = true;
+      return false;
+    }
+    if (!email.checkValidity()) {
+      err.textContent = 'Please enter a valid email address.';
+      btn.disabled = true;
+      return false;
+    }
+    err.textContent = '';
+    btn.disabled = false;
+    return true;
   };
-  document.addEventListener('click', stopJump);
 
-  // AJAX the signup form (no navigation)
-  const form = document.getElementById('signup-form');
-  const btn  = document.getElementById('signup-btn');
-  const msg  = document.getElementById('signup-msg');
+  email.addEventListener('input', validate);
+  email.addEventListener('change', validate);
+  window.addEventListener('pageshow', validate);
+  document.addEventListener('DOMContentLoaded', validate);
 
-  if (form && btn && msg) {
+  if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (!validate()) return;
 
-      // iOS Safari: blur to avoid snap when keyboard closes
-      if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
-
+      document.activeElement?.blur?.();
       const original = btn.textContent;
       btn.disabled = true;
       btn.textContent = 'Submitting…';
       msg.textContent = '';
+      err.textContent = '';
 
       try {
         await fetch(FORM_ENDPOINT, {
@@ -416,34 +412,21 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
           body: new FormData(form),
           keepalive: true
         });
-
         btn.textContent = 'Subscribed!';
         msg.textContent = 'Thanks!';
         form.reset();
-      } catch (err) {
-        btn.disabled = false;
+      } catch {
         btn.textContent = original;
-        msg.textContent = 'Error. Try again?';
-        console.error(err);
+        err.textContent = 'Network error. Please try again.';
       } finally {
+        validate(); // re-check button state after reset
         setTimeout(() => { btn.disabled = false; }, 1200);
       }
     }, { capture: true });
   }
-
-  // Guard against accidental hash jumps
-  window.addEventListener('hashchange', (e) => {
-    if (!location.hash) return;
-    const id = location.hash.slice(1);
-    if (!document.getElementById(id)) {
-      e.preventDefault?.();
-      history.replaceState(null, '', location.pathname + location.search);
-    }
-  });
-
-  // Keep footer from affecting scroll anchoring if it changes height
-  document.querySelector('.site-footer')?.style.setProperty('overflow-anchor', 'none');
 </script>
+
+
 
 <!-- Clock JS (scroll-safe) -->
 <script is:inline>
