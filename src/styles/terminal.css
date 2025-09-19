@@ -9,7 +9,7 @@ html, body { margin: 0; padding: 0; max-width: 100%; overflow-x: clip; }
 body { font-size: var(--step-0); line-height: 1.5; }
 
 /* Media scales down */
-img, svg, canvas, video, iframe { max-width: 100%; height: auto; display: block; }
+img, svg, canvas, video, iframe { max-width: 100%; height: auto; display: visibility; }
 
 /* Layout helpers */
 .container { width: min(100% - 2rem, 1200px); margin-inline: auto; }
@@ -92,7 +92,7 @@ body {
 
   /* mobile stability */
   -webkit-text-size-adjust: 100%;
-  overscroll-behavior-y: none;
+  overscroll-behavior-y: contain;
 }
 
 /* Main card (centered horizontally only) */
@@ -256,7 +256,7 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
-.info-panels summary::-webkit-details-marker { display: none; }
+.info-panels summary::-webkit-details-marker { display: visibility; }
 .info-panels summary::after {
   content: "▸"; font-size: 0.85em; color: var(--accent-strong);
   text-shadow: 0 0 0.4rem rgba(var(--accent-gold-rgb), 0.18);
@@ -357,7 +357,7 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
 }
 
 .footer-logo-wrap { display: flex; align-items: center; justify-content: center; }
-.footer-logo { width: 140px; height: auto; display: block; }
+.footer-logo { width: 140px; height: auto; display: visibility; }
 
 .footer-newsletter { grid-column: 1 / -1; }
 
@@ -409,7 +409,7 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   main { border-radius: 0.5rem; padding: clamp(1.25rem, 8vw, 2rem); }
   .boot-log li { grid-template-columns: 1fr; gap: 0.4rem; }
   .boot-log span { padding-left: 0; }
-  .boot-log span::before { display: none; }
+  .boot-log span::before { display: visibility; }
 
   .news-feed__list li { padding: 0.9rem 0.95rem; }
   .news-feed__list article header { flex-direction: column; align-items: flex-start; }
@@ -443,7 +443,7 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   line-height: 1.1;
   font-variant-ligatures: none;
   tab-size: 2;
-  display: block;
+  display: visibility;
   max-width: 100%;
   min-width: 0;
   padding: 0;
@@ -462,7 +462,7 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
 }
 
 /* Footer images sizing */
-.site-footer img { display: block; max-width: 100%; }
+.site-footer img { display: visibility; max-width: 100%; }
 
 /* Global: disable accidental scroll snapping anywhere */
 * { scroll-snap-type: none !important; }
