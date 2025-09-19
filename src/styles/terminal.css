@@ -267,7 +267,7 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
 /* News feed */
 .news-feed {
   display: grid;
-  gap: clamp(1.2rem, 3vw, 1.8rem);
+  gap: clamp(0.9rem, 2.4vw, 1.3rem);
   background: linear-gradient(145deg, rgba(var(--accent-rgb), 0.22), rgba(var(--accent-rgb), 0.46));
   border: 1px solid rgba(var(--accent-gold-rgb), 1);
   border-radius: 0.75rem;
@@ -282,18 +282,18 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   color: var(--accent-gold-strong);
 }
 .news-feed__header p {
-  margin: 0.55rem 0 0; color: var(--text-muted);
+  margin: 0rem 0 0; color: var(--text-muted);
   font-size: clamp(0.85rem, 2vw, 0.95rem); line-height: 1.6;
 }
 .news-feed__list {
   list-style: none; margin: 0; padding: 0;
-  display: grid; gap: clamp(1rem, 2.5vw, 1.5rem);
+  display: grid; gap: clamp(0.75rem, 2vw, 1rem);
 }
 .news-feed__list li {
   background: rgba(6, 24, 48, 0.85);
   border: 1px solid rgba(var(--accent-gold-rgb), 1);
   border-radius: 0.6rem;
-  padding: 1rem 1.15rem;
+  padding: 0.75rem 1.15rem 0.95rem;
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
 .news-feed__list li:hover { border-color: var(--accent-strong); transform: translateY(-2px); }
@@ -319,6 +319,7 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   margin: 0; color: var(--text-muted);
   font-size: clamp(0.85rem, 2vw, 0.95rem); line-height: 1.6;
 }
+
 
 /* Footer */
 .site-footer {
@@ -362,6 +363,19 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   font-family: inherit; font-size: 0.85rem; color: var(--text-strong);
 }
 .site-footer input[type="email"]::placeholder { color: rgba(var(--accent-gold-rgb), 0.45); }
+.site-footer button,
+.btn-cta {
+  justify-self: start;
+  background: linear-gradient(135deg, rgba(var(--accent-gold-rgb), 0.92), rgba(var(--accent-rgb), 0.45));
+  border: 1px solid rgba(var(--accent-rgb), 0.75);
+  border-radius: 999px;
+  padding: 0.45rem 1.25rem;
+  font-family: inherit; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text); cursor: pointer;
+  text-shadow: 0 0 0.4rem rgba(var(--accent-gold-rgb), 0.45);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
 .site-footer button {
   justify-self: start;
   background: linear-gradient(135deg, rgba(var(--accent-gold-rgb), 0.92), rgba(var(--accent-rgb), 0.45));
@@ -372,6 +386,11 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   color: var(--text); cursor: pointer;
   text-shadow: 0 0 0.4rem rgba(var(--accent-gold-rgb), 0.45);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.site-footer button:hover, .site-footer button:focus,
+.btn-cta:hover, .btn-cta:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 0.6rem 1.2rem rgba(var(--accent-gold-rgb), 0.28), 0 0.35rem 0.75rem rgba(var(--accent-gold-rgb), 0.16);
 }
 .site-footer button:hover, .site-footer button:focus {
   transform: translateY(-1px);
@@ -453,3 +472,76 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
 
 /* Disable accidental scroll snap */
 * { scroll-snap-type: none !important; }
+/* --- Full-bleed background: mobile-safe and desktop-pretty ---------------- */
+
+/* 1) Put the gradient on BOTH html and body so either can paint it */
+html,
+body {
+  background-color: #020b1e; /* solid fallback */
+  background-image:
+    radial-gradient(1200px 600px at 50% -10%, rgba(77,163,255,.18), transparent 60%),
+    radial-gradient(1200px 800px at 100% 110%, rgba(207,168,25,.12), transparent 65%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-size: cover, cover, auto;
+  background-position: center top, right bottom, top;
+}
+
+/* 2) MOBILE: never use background-attachment: fixed (causes edge gaps) */
+html,
+body {
+  background-attachment: scroll, scroll, scroll;
+}
+
+/* 3) DESKTOP ONLY: re-enable parallax if you want it */
+@media (min-width: 900px) and (hover: hover) and (pointer: fine) {
+  html,
+  body {
+    background-attachment: fixed, fixed, scroll;
+  }
+}
+
+/* 4) Make sure nothing clips the edges */
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+/* 5) If any element uses 100vw, force it to 100% to avoid a thin horizontal scroll
+      that can reveal a sliver at the edge on some mobile browsers */
+:where([style*="width:100vw"], .w-100vw) { width: 100% !important; }
+
+/* 6) Ensure inner panels are transparent so the page bg shows to the edges */
+main, .container, header, section, .site-footer { background-color: transparent; }
+/* --- Fix weird edge box / gutter frame --- */
+
+/* 1) Don't reserve gutters on mobile/touch (removes the framed look) */
+html { scrollbar-gutter: auto; }
+@media (min-width: 900px) and (hover: hover) and (pointer: fine) {
+  html { scrollbar-gutter: stable; } /* desktop only */
+}
+
+/* 2) Ensure no horizontal clip artifact looks like an edge line */
+html, body { overflow-x: clip; }
+
+/* 3) Make sure page background truly paints to the edges */
+html, body {
+  background-attachment: scroll, scroll, scroll; /* avoid mobile 'fixed' glitches */
+}
+
+/* 4) (Optional) If the "box" you see is actually the main panel border, comment this out */
+/* main { border-color: transparent; box-shadow: none; } */
+
+/* 5) (Optional) Some Android builds render a faint 1px seam on device edges.
+      A tiny inner shadow hides it (invisible on most screens). */
+/*
+html::before {
+  content: "";
+  position: fixed; inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 0.5px rgba(0,0,0,.25);
+}
+*/

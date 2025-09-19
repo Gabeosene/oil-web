@@ -64,7 +64,8 @@ const newsFeed = [
 
   <header>
     <div class="fit-container logo-block">
-      <pre id="ascii-logo" class="ascii-fit-border">{String.raw`
+      <pre id="ascii-logo" class="ascii-fit-border">
+      {String.raw`
               -j|jj|jj|jj|jj|jj               
            {|jcOaddaddaddaddaddJc|j{           
         c|cOdaaaaaaaaaaaaaaaaaaaaddOcjj        
@@ -74,7 +75,7 @@ const newsFeed = [
    Jaaaaadaaada@@@           @@@aadaadaaaaaO   
  JOdaaadaaaaaaM@j  @@@@@@@@@  J@MaaaaaadaaadOJ 
  jdaadaaaadaaa@@  @@@aaaaa@@@  @@aadaaaaadaadj 
-{Oaaaaaadaaada@   @aaaOILdaM@  "@aaaadaaaaaaaO|
+{Oaaaaaadaaada@   @aaaOILaaa@  "@aaaadaaaaaaaO|
 jdaadaaaaaaaaa@@  @@Maaaaa@@@  @@adaaaadaadaadj
 jdaaaadaadaaad@@   @@@@@@@@@   @@aaadaaaaaaaadj
 jdaaaaaaaaadaaa@@@    -@-    @@@adaaaadaadaaadj
@@ -234,16 +235,14 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
     <details>
       <summary>Join Us</summary>
       <ul>
-        <li>Please follow the link to a Google Form to join OIL today!</li>
-        <li>
-          <a
-            class="footer-cta"
-            href="https://docs.google.com/forms/d/e/1FAIpQLSdx4pLc4U_tc6f43EmEr5PYv8chOBxufopI2WGBb9e36x5uYw/viewform?usp=sharing&ouid=106583092023257242650"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Join OIL</a
-          >
-        </li>
+        <p>Please follow the link to a Google Form to join OIL today!</p>
+        <button
+        class="btn-cta"
+        type="button"
+        onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSdx4pLc4U_tc6f43EmEr5PYv8chOBxufopI2WGBb9e36x5uYw/viewform?usp=sharing','_blank')"
+      >
+        Join OIL
+      </button>
       </ul>
     </details>
   </section>
