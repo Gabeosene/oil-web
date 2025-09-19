@@ -60,10 +60,12 @@ p  { margin: 0.6em 0; }
   --accent-gold-strong: #cfa819;
 }
 
-/* Viewport stability */
+/* Viewport & scroll stability */
 html {
   height: -webkit-fill-available;  /* iOS Safari */
   scroll-behavior: auto;           /* avoid smooth-scroll side effects */
+  overscroll-behavior-y: none;     /* prevent bounce->jump loops */
+  scrollbar-gutter: stable both-edges; /* prevent layout shift when scrollbar appears */
 }
 
 /* Base */
@@ -73,8 +75,11 @@ body {
 
   /* stable viewport units */
   min-height: 100svh;              /* safe small viewport height */
-  min-height: 100dvh;              /* modern dynamic viewport height */
-
+}
+@supports not (min-height: 100svh) {
+  body { min-height: 100vh; }      /* fallback for older browsers */
+}
+body {
   background:
     radial-gradient(circle at top left, rgba(var(--accent-rgb), 0.18), transparent 60%),
     radial-gradient(circle at bottom right, rgba(var(--accent-gold-rgb), 0.08), transparent 55%),
@@ -156,7 +161,7 @@ main {
   max-width: 90vw;
   overflow: hidden;
 
-  /* critical: only disable anchoring here */
+  /* keep out of flow anchoring (correct for fixed/abs widgets) */
   overflow-anchor: none;
   contain: layout paint;
 }
@@ -234,7 +239,9 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   padding: 0.85rem 1.1rem;
   transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 0 0.9rem rgba(var(--accent-rgb), 0.12);
-  overflow-anchor: none;
+
+  /* FIX: allow scroll anchoring here so the page doesn't jump */
+  overflow-anchor: auto;
 }
 .info-panels details[open] {
   background: var(--surface-hover);
@@ -245,7 +252,7 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   list-style: none; display: flex; align-items: center; justify-content: space-between;
   gap: 1rem; cursor: pointer; color: var(--text-strong);
   font-size: clamp(0.95rem, 2.1vw, 1.05rem); letter-spacing: 0.08em; text-transform: uppercase;
-    scroll-margin-top: 0;           /* avoid auto centering on focus */
+  scroll-margin-top: 0;           /* avoid auto centering on focus */
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -380,7 +387,12 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
 }
 
 /* Reserve space for live status to prevent CLS */
-#signup-msg { display:inline-block; min-width:8ch; min-height:1em; overflow-anchor: none; }
+#signup-msg {
+  display:inline-block; min-width:8ch; min-height:1em;
+
+  /* FIX: allow scroll anchoring so viewport stays put on updates */
+  overflow-anchor: auto;
+}
 
 /* Bottom bar */
 .site-footer__bar {
@@ -451,6 +463,9 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
 
 /* Footer images sizing */
 .site-footer img { display: block; max-width: 100%; }
+
+/* Global: disable accidental scroll snapping anywhere */
+* { scroll-snap-type: none !important; }
 
 /* Optional: debug rogue overflow */
 /* body * { outline: 1px dashed rgba(255,255,255,.08); } */

@@ -25,19 +25,28 @@ const newsFeed = [
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
   <meta name="color-scheme" content="light dark" />
-  <meta name="description" content="Obuda Innovation Laboratory (OIL) – Advancing science and innovation through interdisciplinary research at Obuda University." />
+  <meta
+    name="description"
+    content="Obuda Innovation Laboratory (OIL) – Advancing science and innovation through interdisciplinary research at Obuda University."
+  />
 
   <title>Obuda Innovation Laboratory</title>
 
-  <!-- Favicons (ensure these files exist in /public/images) -->
+  <!-- Favicons -->
   <link rel="icon" href="/images/oil-favicon.svg" type="image/svg+xml" />
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
 </head>
 
 <main>
@@ -92,12 +101,13 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
         if (!container) return;
 
         const cs = getComputedStyle(container);
-        const available = container.clientWidth
-          - parseFloat(cs.paddingLeft || 0)
-          - parseFloat(cs.paddingRight || 0);
+        const available =
+          container.clientWidth -
+          parseFloat(cs.paddingLeft || 0) -
+          parseFloat(cs.paddingRight || 0);
 
         const lines = el.textContent.replace(/\r/g, '').split('\n');
-        const cols = Math.max(1, ...lines.map(l => l.length));
+        const cols = Math.max(1, ...lines.map((l) => l.length));
 
         const probe = document.createElement('span');
         probe.style.visibility = 'hidden';
@@ -118,7 +128,7 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
 
       function mountAsciiFit(root = document) {
         const els = Array.from(root.querySelectorAll('.ascii-fit-border'));
-        const ro = new ResizeObserver(entries => {
+        const ro = new ResizeObserver((entries) => {
           const seen = new Set();
           for (const entry of entries) {
             const el = entry.target.classList?.contains('ascii-fit-border')
@@ -131,7 +141,7 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
           }
         });
 
-        els.forEach(el => {
+        els.forEach((el) => {
           const cont = el.closest('.fit-container') || el.parentElement;
           ro.observe(el);
           if (cont) ro.observe(cont);
@@ -201,7 +211,8 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
             href="https://docs.google.com/forms/d/e/1FAIpQLSdx4pLc4U_tc6f43EmEr5PYv8chOBxufopI2WGBb9e36x5uYw/viewform?usp=sharing&ouid=106583092023257242650"
             target="_blank"
             rel="noopener noreferrer"
-          >Join OIL</a>
+            >Join OIL</a
+          >
         </li>
       </ul>
     </details>
@@ -253,14 +264,41 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
       <section aria-label="Follow us">
         <h3>Follow us</h3>
         <ul>
-          <li><a href="https://www.linkedin.com/company/obuda-innovation-laboratory/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-          <li><a href="https://www.instagram.com/oil_banki/?hl=en" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-          <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdx4pLc4U_tc6f43EmEr5PYv8chOBxufopI2WGBb9e36x5uYw/viewform?usp=sharing&ouid=106583092023257242650" target="_blank" rel="noopener noreferrer">Join Form</a></li>
+          <li>
+            <a
+              href="https://www.linkedin.com/company/obuda-innovation-laboratory/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >LinkedIn</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://www.instagram.com/oil_banki/?hl=en"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Instagram</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSdx4pLc4U_tc6f43EmEr5PYv8chOBxufopI2WGBb9e36x5uYw/viewform?usp=sharing&ouid=106583092023257242650"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Join Form</a
+            >
+          </li>
         </ul>
       </section>
 
       <section class="footer-logo-wrap" aria-label="OIL logo">
-        <img src="/images/6-OIL-icon-gradient-blue.svg" alt="OIL Logo" class="footer-logo" width="140" height="140" />
+        <img
+          src="/images/6-OIL-icon-gradient-blue.svg"
+          alt="OIL Logo"
+          class="footer-logo"
+          width="140"
+          height="140"
+        />
       </section>
 
       <section aria-label="Lab address">
@@ -276,39 +314,53 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
 
       <section class="footer-newsletter" aria-label="Join our newsletter">
         <h3>Join our newsletter</h3>
-        <p>Receive lab bulletins, project calls, and event invitations straight to your inbox.</p>
+        <p>
+          Receive lab bulletins, project calls, and event invitations straight to your inbox.
+        </p>
         <form id="signup-form" data-ajax novalidate>
-          <input type="email" name="email" placeholder="oil@oil-obuda.hu" required inputmode="email" />
+          <input
+            type="email"
+            name="email"
+            placeholder="oil@oil-obuda.hu"
+            required
+            inputmode="email"
+            autocomplete="email"
+          />
           <button id="signup-btn" type="submit">Subscribe</button>
-          <span id="signup-msg" aria-live="polite" style="display:inline-block; min-width:8ch; margin-left:.5rem;"></span>
+          <span
+            id="signup-msg"
+            aria-live="polite"
+            style="display:inline-block; min-width:8ch; margin-left:.5rem;"
+          ></span>
         </form>
       </section>
     </div>
 
     <div class="site-footer__bar" role="contentinfo">
       <p>OIL 2025: All rights reserved</p>
-      <p>Version 3.1.1</p>
+      <p>Version 3.3.1</p>
     </div>
   </footer>
 </main>
 
 <!-- Anti-jump and newsletter JS -->
 <script is:inline>
-  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  // Let the browser manage scroll position normally
+  if ('scrollRestoration' in history) history.scrollRestoration = 'auto';
 
+  // Detect touch scrolling (used to pause non-critical UI updates)
   let _isTouchScrolling = false;
   addEventListener('touchstart', () => { _isTouchScrolling = true; }, { passive: true });
   addEventListener('touchend',   () => { setTimeout(() => _isTouchScrolling = false, 250); }, { passive: true });
 
   const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyeYmHt2kCQ4ybemI62-7kmbJIFNVIKtKj-wC3ot7eCsDGXg5nmYMWaG0XGfcMGOpGkMg/exec';
 
-  // Kill jumps from dummy anchors
+  // Kill jumps from dummy anchors (use click only; avoid global non-passive touchstart)
   const stopJump = (e) => {
     const a = e.target.closest && e.target.closest('a[href="#"], a[href=""]');
     if (a) { e.preventDefault(); e.stopPropagation(); return false; }
   };
-  document.addEventListener('click', stopJump, { passive: false });
-  document.addEventListener('touchstart', stopJump, { passive: false });
+  document.addEventListener('click', stopJump);
 
   // AJAX the signup form (no navigation)
   const form = document.getElementById('signup-form');
@@ -318,8 +370,6 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
   if (form && btn && msg) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation?.();
 
       // iOS Safari: blur to avoid snap when keyboard closes
       if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
@@ -361,7 +411,7 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
     }
   });
 
-  // Disable anchoring on footer
+  // Keep footer from affecting scroll anchoring if it changes height
   document.querySelector('.site-footer')?.style.setProperty('overflow-anchor', 'none');
 </script>
 
@@ -416,8 +466,9 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
     setInterval(updateClock, 1000);
   }
 </script>
+
+<!-- Keep the tapped <summary> visually in place while its <details> opens/closes -->
 <script is:inline>
-  // Keep the tapped <summary> visually in place while its <details> opens/closes
   (function () {
     const root = document.querySelector('.info-panels');
     if (!root) return;
@@ -429,16 +480,14 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
       const summary = details.querySelector('summary');
       if (!summary) return;
 
-      // Where was the summary before layout change?
       const beforeTop = summary.getBoundingClientRect().top;
-      const beforeScrollY = window.scrollY;
+      const beforeScrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
 
-      // After layout recalculates, compute delta and adjust scroll
       requestAnimationFrame(() => {
         const afterTop = summary.getBoundingClientRect().top;
         const delta = afterTop - beforeTop;
         if (delta !== 0) window.scrollTo({ top: beforeScrollY + delta, left: 0, behavior: 'auto' });
       });
-    }, true); // capture to run early
+    }, true);
   })();
 </script>
