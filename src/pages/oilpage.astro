@@ -3,14 +3,6 @@
 
 import "../styles/terminal.css";
 
-const logo = String.raw`
-  _____          _______            ____
- / ____ \        |_____|            |  |
- | |  | |         |   |             |  |
- | |  | |         |   |             |  |
- | |__| |         |___|             |  |___
- \______/ [OBUDA]|_____|[INNOVATION]|______|[LAB]
-`;
 
 const bootLog = [
   {
@@ -80,13 +72,14 @@ const newsFeed = [
 ---
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light dark">
   <meta name="description" content="Obuda Innovation Laboratory (OIL) – Advancing science and innovation through interdisciplinary research at Obuda University.">
+  <link rel="icon" href="Solid_-_Blue-1 (1).png" type="image/x-icon" />
+  <link rel="icon" type="Solid_-_Blue-1 (1).png" sizes="32x32" href="/favicon-32.png" />
+<link rel="icon" type="Solid_-_Blue-1 (1).png" sizes="16x16" href="/favicon-16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="Solid_-_Blue-1 (1).png">
   <title>Obuda Innovation Laboratory</title>
-  <link rel="icon" type="image/svg+xml" href="3-OIL-icon-blue.svg">
-  <link rel="icon" type="image/png" href="3-OIL-icon-blue.png">
-  <link rel="shortcut icon" href="3-OIL-icon-blue.ico" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
@@ -102,8 +95,109 @@ const newsFeed = [
     </div>
   </div>
   <header>
-    <h1 class="sr-only">Obuda Innovation Laboratory</h1>
-    <pre aria-hidden="true">{logo}</pre>
+    <div class="fit-container logo-block">
+  <pre id="ascii-logo" class="ascii-fit-border">{String.raw`
+              -j|jj|jj|jj|jj|jj               
+           {|jcOaddaddaddaddaddJc|j{           
+        c|cOdaaaaaaaaaaaaaaaaaaaaddOcjj        
+      jcOddaaadaaaadaadaadaadaaaaaadddOcj      
+     jOddaaaaaaadaM@@@@@@@@@MadaaaaaaaddO|     
+   |cOdaaaadaaaa@@@@       @@@@adaaaaaaadOJ    
+   Jaaaaadaaada@@@           @@@aadaadaaaaaO   
+ JOdaaadaaaaaaM@j  @@@@@@@@@  J@MaaaaaadaaadOJ 
+ jdaadaaaadaaa@@  @@@aaaaa@@@  @@aadaaaaadaadj 
+{Oaaaaaadaaada@   @aaaOILdaM@  "@aaaadaaaaaaaO|
+jdaadaaaaaaaaa@@  @@Maaaaa@@@  @@adaaaadaadaadj
+jdaaaadaadaaad@@   @@@@@@@@@   @@aaadaaaaaaaadj
+jdaaaaaaaaadaaa@@@    -@-    @@@adaaaadaadaaadj
+jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
+|daaaaaaadaadaaaaa@@@@@@@@@@@aadaaaaadaadaaaaa|
+|Odaadaaaaaaaaadaa@         @aaaadaaaaaaaadadO{
+ jdaaaadaadaadaaad@@@@@@@@@@@adaaaadaadaaaaadc 
+ cJdaaaaaaaaaaaaaa@         @aaadaaaaaaadaadOJ 
+  dJdaaadaadaadaaa@  @@@@@@@@aaaaadaadaaaddOj  
+    cOdaaaaaaaaada@  @aaaaaaadaaaaaaaaaddOc|   
+     jOdaadaadaaaa@@@@aadaadaaadaaadaaddOj     
+      {cJdaaaaadaaaaaadaaaaaaaaaadaadOcj{      
+         |cJddaaadaadaaaadaadaaadddOc{         
+           {j|cJddddddddddddddaOcj|{           
+               jjjjj|jj|jj|jj|j-               
+`}</pre>
+ <h1 class="logo-title">Obuda Innovation Laboratory</h1>
+</div>
+
+<script is:inline>
+  // Fit ASCII to its nearest .fit-container’s inner width (excludes borders)
+  function fitAsciiToContainer(el) {
+    const container = el.closest('.fit-container') || el.parentElement;
+    if (!container) return;
+
+    // Available content width = container clientWidth minus its paddings
+    const cs = getComputedStyle(container);
+    const available =
+      container.clientWidth
+      - parseFloat(cs.paddingLeft || 0)
+      - parseFloat(cs.paddingRight || 0);
+
+    // Get longest line (columns)
+    const lines = el.textContent.replace(/\r/g, '').split('\n');
+    const cols = Math.max(1, ...lines.map(l => l.length));
+
+    // Measure width of "cols" monospace characters at 100px to get px/char accurately
+    const probe = document.createElement('span');
+    probe.style.visibility = 'hidden';
+    probe.style.position = 'absolute';
+    probe.style.whiteSpace = 'pre';
+    probe.style.fontFamily = getComputedStyle(el).fontFamily;
+    probe.style.fontSize = '100px';
+    probe.textContent = '0'.repeat(cols);
+    document.body.appendChild(probe);
+    const widthAt100 = probe.getBoundingClientRect().width || 1;
+    probe.remove();
+
+    // Characters per pixel at 100px => scale to available width
+    const pxPerCharAt100 = widthAt100 / cols;
+    let size = available / pxPerCharAt100; // target font-size in px
+
+    // Clamp to keep legible but always within border; adjust to your taste
+    size = Math.max(8, Math.min(28, size));
+
+    el.style.fontSize = size + 'px';
+  }
+
+  // Observe both element and container resize
+  function mountAsciiFit(root = document) {
+    const els = Array.from(root.querySelectorAll('.ascii-fit-border'));
+    const ro = new ResizeObserver(entries => {
+      // Refit any observed element and its .fit-container
+      const seen = new Set();
+      for (const entry of entries) {
+        const el = entry.target.classList.contains('ascii-fit-border')
+          ? entry.target
+          : entry.target.querySelector?.('.ascii-fit-border');
+        if (el && !seen.has(el)) {
+          seen.add(el);
+          fitAsciiToContainer(el);
+        }
+      }
+    });
+
+    els.forEach(el => {
+      const cont = el.closest('.fit-container') || el.parentElement;
+      ro.observe(el);
+      if (cont) ro.observe(cont);
+      // Initial fit
+      fitAsciiToContainer(el);
+    });
+
+    // Also refit on orientation/zoom-ish events
+    addEventListener('orientationchange', () => els.forEach(fitAsciiToContainer));
+    addEventListener('resize', () => els.forEach(fitAsciiToContainer));
+  }
+
+  document.addEventListener('DOMContentLoaded', () => mountAsciiFit(document));
+</script>
+
   </header>
 
   <section class="info-panels" aria-label="Site information panels">
@@ -190,48 +284,62 @@ const newsFeed = [
     </ol>
   </section>
 
-  <footer class="site-footer" aria-labelledby="footer-heading">
-    <h2 id="footer-heading" class="sr-only">Codex lab footer navigation</h2>
-    <div class="site-footer__status">
-      <span class="status-label">STATUS</span>
-      <span class="status-value">ONLINE AWAITING COMMAND</span>
-    </div>
-    <div class="site-footer__grid">
-      <section aria-label="Follow us">
-        <h3>Follow us</h3>
-        <ul>
-          <li><a href="https://www.linkedin.com/company/obuda-innovation-laboratory/" target="_blank" rel="noreferrer">LinkedIn</a></li>
-          <li><a href="https://www.instagram.com/oil_banki/?hl=en" target="_blank" rel="noreferrer">Instagram</a></li>
-          <li><a href="https://www.youtube.com" target="_blank" rel="noreferrer">YouTube</a></li>
-        </ul>
-      </section>
-      <section aria-label="Join our newsletter">
-        <h3>Join our newsletter</h3>
-        <p>Receive lab bulletins, project calls, and event invitations straight to your inbox.</p>
+<footer class="site-footer" aria-labelledby="footer-heading">
+  <h2 id="footer-heading" class="sr-only">Obuda Innovation Laboratory footer</h2>
+
+  <!-- status row -->
+  <div class="site-footer__status" role="status">
+    <span class="status-label">STATUS</span>
+    <span class="status-value">ONLINE AWAITING COMMAND</span>
+  </div>
+
+  <!-- 3-column grid -->
+  <div class="site-footer__grid">
+    <!-- Col 1: Follow us -->
+    <section aria-label="Follow us">
+      <h3>Follow us</h3>
+      <ul>
+        <li><a href="https://www.linkedin.com/company/obuda-innovation-laboratory/" target="_blank" rel="noreferrer">LinkedIn</a></li>
+        <li><a href="https://www.instagram.com/oil_banki/?hl=en" target="_blank" rel="noreferrer">Instagram</a></li>
+        <li><a href="https://www.youtube.com" target="_blank" rel="noreferrer">YouTube</a></li>
+      </ul>
+    </section>
+
+    <!-- Col 2: Center logo -->
+    <section class="footer-logo-wrap" aria-label="OIL logo">
+      <img src="6-OIL-icon-gradient-blue.svg" alt="OIL Logo" class="footer-logo" />
+    </section>
+
+    <!-- Col 3: Lab address -->
+    <section aria-label="Lab address">
+      <h3>Lab address</h3>
+      <address>
+        Obuda Innovation Laboratory (O.I.L.)<br />
+        Csokonai utca 6<br />
+        H-1081 Budapest<br />
+        Hungary
+      </address>
+      <div class="glitch" data-text="AUTHORIZED CHAOS ONLY">AUTHORIZED CHAOS ONLY</div>
+    </section>
+
+    <!-- Full-width: Newsletter -->
+    <section class="footer-newsletter" aria-label="Join our newsletter">
+      <h3>Join our newsletter</h3>
+      <p>Receive lab bulletins, project calls, and event invitations straight to your inbox.</p>
       <form id="signup-form">
         <input type="email" name="email" placeholder="oil@oil-obuda.hu" required />
         <button id="signup-btn" type="submit">Subscribe</button>
         <span id="signup-msg" aria-live="polite" style="margin-left:.5rem;"></span>
       </form>
+    </section>
+  </div>
 
-      </section>
-      <section aria-label="Lab address">
-        <h3>Lab address</h3>
-        <address>
-          Obuda Innovation Laboratory (O.I.L.)<br />
-          Csokonai utca 6 <br />
-          H-1081 Budapest<br />
-          Hungary
-        </address>
-        <div class="glitch" data-text="AUTHORIZED CHAOS ONLY">
-  AUTHORIZED CHAOS ONLY
-</div>
-      </section>
-    </div>
-  </footer>
-  <footer style="text-align:center; font-size:12px; color:#666; margin-top:20px; padding:10px;">
-  OIL 2025: All rights reserved
+  <!-- bottom bar -->
+  <div class="site-footer__bar" role="contentinfo">
+    <p>OIL 2025: All rights reserved</p>
+  </div>
 </footer>
+
 </main>
 <script>
   const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyeYmHt2kCQ4ybemI62-7kmbJIFNVIKtKj-wC3ot7eCsDGXg5nmYMWaG0XGfcMGOpGkMg/exec'; // from Apps Script deployment
