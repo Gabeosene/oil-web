@@ -58,14 +58,26 @@ p  { margin: 0.6em 0; }
   --accent-gold: #cfa819;
   --accent-gold-rgb: 207, 168, 25;
   --accent-gold-strong: #cfa819;
+
+  /* clock height (used to reserve header space on desktop) */
+  --clock-h: 3.5rem;
 }
 
 /* Viewport & scroll stability */
 html {
   height: -webkit-fill-available;  /* iOS Safari */
   scroll-behavior: auto;           /* avoid smooth-scroll side effects */
-  overscroll-behavior-y: none;     /* prevent bounce->jump loops */
+  overscroll-behavior-y: auto;     /* restore native pull-to-refresh */
   scrollbar-gutter: stable both-edges; /* prevent layout shift when scrollbar appears */
+
+  /* full-bleed background on root to avoid edge gaps */
+  background:
+    radial-gradient(1200px 600px at 50% -10%, rgba(var(--accent-rgb), .18), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+  background-repeat: no-repeat;
+  background-attachment: fixed, fixed;
+  background-size: cover, auto;
+  background-position: center, center;
 }
 
 /* Base */
@@ -80,10 +92,8 @@ body {
   body { min-height: 100vh; }      /* fallback for older browsers */
 }
 body {
-  background:
-    radial-gradient(circle at top left, rgba(var(--accent-rgb), 0.18), transparent 60%),
-    radial-gradient(circle at bottom right, rgba(var(--accent-gold-rgb), 0.08), transparent 55%),
-    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+  /* keep body transparent so html bg is visible edge-to-edge */
+  background: transparent;
   color: var(--text);
   font-family: "Consolas", "Courier New", monospace;
 
@@ -92,7 +102,7 @@ body {
 
   /* mobile stability */
   -webkit-text-size-adjust: 100%;
-  overscroll-behavior-y: contain;
+  overscroll-behavior-y: auto;     /* restore PTR on body as well */
 }
 
 /* Main card (centered horizontally only) */
@@ -143,11 +153,14 @@ main {
   20%, 24%, 55% { opacity: 0.6; }
 }
 
-/* System clock – jank-free */
+/* ---- SYSTEM CLOCK (no overlap with ASCII) ---- */
+/* Desktop/tablet: keep absolute and reserve space above header */
 .system-clock {
   position: absolute;
-  top: clamp(1rem, 4vw, 1.5rem);
-  right: clamp(1rem, 4vw, 1.5rem);
+  top: clamp(0.75rem, 4vw, 1.5rem);
+  right: clamp(0.75rem, 4vw, 1.5rem);
+  z-index: 3;
+
   display: grid;
   grid-auto-rows: 1fr;
   gap: 0.5rem;
@@ -157,7 +170,7 @@ main {
   border-radius: 0.5rem;
   box-shadow: 0 0 1.1rem rgba(var(--accent-rgb), 0.26), 0 0 0.45rem rgba(var(--accent-gold-rgb), 0.14);
   min-width: 10.5rem;
-  height: 3.5rem;
+  height: var(--clock-h);
   max-width: 90vw;
   overflow: hidden;
 
@@ -165,6 +178,9 @@ main {
   overflow-anchor: none;
   contain: layout paint;
 }
+/* Reserve vertical room so header ASCII never sits under the clock */
+header { padding-top: calc(var(--clock-h) + 0.75rem); }
+
 .system-clock__row {
   display: flex;
   justify-content: space-between;
@@ -188,9 +204,6 @@ main {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-
-/* Header */
-header { display: flex; flex-direction: column; gap: 0.75rem; }
 
 /* Code/pre (global). ASCII blocks have their own class below. */
 pre {
@@ -240,7 +253,7 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 0 0.9rem rgba(var(--accent-rgb), 0.12);
 
-  /* FIX: allow scroll anchoring here so the page doesn't jump */
+  /* allow scroll anchoring here so the page doesn't jump */
   overflow-anchor: auto;
 }
 .info-panels details[open] {
@@ -333,6 +346,8 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   gap: clamp(1.2rem, 3vw, 1.8rem);
   padding-top: 1.5rem;
   border-top: 1px solid rgba(var(--accent-gold-rgb), 0.25);
+  /* prevent footer height changes from re-anchoring scroll */
+  overflow-anchor: none;
 }
 .site-footer__status { display: flex; align-items: baseline; gap: 0.75rem; font-size: clamp(0.75rem, 2vw, 0.85rem); letter-spacing: 0.18em; color: var(--text-muted); }
 .status-label { color: var(--accent-gold-strong); }
@@ -390,7 +405,7 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
 #signup-msg {
   display:inline-block; min-width:8ch; min-height:1em;
 
-  /* FIX: allow scroll anchoring so viewport stays put on updates */
+  /* allow scroll anchoring so viewport stays put on updates */
   overflow-anchor: auto;
 }
 
@@ -407,15 +422,21 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
 /* Mobile adjustments */
 @media (max-width: 40rem) {
   main { border-radius: 0.5rem; padding: clamp(1.25rem, 8vw, 2rem); }
+
+  /* On small screens, make clock inline and remove reserved header padding */
+  .system-clock {
+    position: static;
+    height: auto;
+    margin: 0 0 0.75rem auto; /* keeps it right-aligned */
+  }
+  header { padding-top: 0; }
+
   .boot-log li { grid-template-columns: 1fr; gap: 0.4rem; }
   .boot-log span { padding-left: 0; }
   .boot-log span::before { display: none; }
 
   .news-feed__list li { padding: 0.9rem 0.95rem; }
   .news-feed__list article header { flex-direction: column; align-items: flex-start; }
-
-  /* keep clock out of flow on mobile too */
-  .system-clock { /* no overrides */ }
 
   .site-footer__grid { grid-template-columns: 1fr; }
 }
