@@ -1,318 +1,298 @@
 ---
 /* oilpage.astro */
+
+import "../styles/terminal.css";
+
+const logo = String.raw`
+  _____          _______            ____
+ / ____ \        |_____|            |  |
+ | |  | |         |   |             |  |
+ | |  | |         |   |             |  |
+ | |__| |         |___|             |  |___
+ \______/ [OBUDA]|_____|[INNOVATION]|______|[LAB]
+`;
+
+const bootLog = [
+  {
+    time: "00:00:00.031",
+    iso: "PT0.031S",
+    message: "BOOT SEQUENCE  OIL SYSTEM BIOS v4.2",
+  },
+  {
+    time: "00:00:00.214",
+    iso: "PT0.214S",
+    message: "MEMORY BANKS CALIBRATED",
+  },
+  {
+    time: "00:00:00.402",
+    iso: "PT0.402S",
+    message: "SENSOR GRID ONLINE",
+  },
+  {
+    time: "00:00:00.655",
+    iso: "PT0.655S",
+    message: "NEURAL ROUTINES STABLE",
+  },
+  {
+    time: "00:00:00.883",
+    iso: "PT0.883S",
+    message: "FIELD OPERATIONS SYNCED",
+  },
+  {
+    time: "00:00:01.127",
+    iso: "PT1.127S",
+    message: "INIT HANDSHAKE OPERATOR LINK ESTABLISHED",
+  },
+  {
+    time: "00:00:01.512",
+    iso: "PT1.512S",
+    message: "DIAGNOSTIC SUMMARY: ALL SYSTEMS NOMINAL",
+  },
+];
+
+const newsFeed = [
+  {
+    iso: "2025-09-18",
+    stamp: "9 SEPTEMBER 2025",
+    title: "Website is Live!",
+    summary:
+      "After a lot of fighting with our internal systems, our website is finally online. Please enjoy :)",
+    status: "OIL Internal",
+  },
+  //{
+  //  iso: "2025-09-16",
+  //  stamp: "28 2024",
+  //  title: "Thermal analytics firmware pushed",
+  //  summary:
+   //   "Latest firmware bundle tightens predictive thresholds on heat exchangers, cutting false alarms by 18% in test simulations.",
+   // status: "Firmware",
+  //},
+ // {
+  //  iso: "2024-04-10",
+  //  stamp: "10 APR 2024",
+  //  title: "Lab clean room expansion commissioned",
+  //  summary:
+  //    "Clean room wing now operational with dual-spectrum diagnostics benches to accelerate composite fluid research cycles.",
+  //  status: "Infrastructure",
+  //},
+];
 ---
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="color-scheme" content="light dark" />
-  <meta name="description" content="Obuda Innovation Laboratory (OIL) – Advancing science and innovation through interdisciplinary research at Obuda University." />
-  <title>Obuda Innovation Laboratory (OIL)</title>
 
-  <!-- Make sure these files are in /public -->
-  <link rel="icon" type="image/svg+xml" href="/3-OIL-icon-blue.svg" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
-
-  <style>
-    :root {
-      --bg: #f5f7fa;
-      --text: #1a1a1a;
-      --nav-bg: #005A9C;
-      --nav-link: #fff;
-      --nav-hover: #FFD200;
-      --header-bg: #00205B;
-      --footer-bg: #00205B;
-      --accent: #FFD200;
-      --card-bg: #fff;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0d1117;
-        --text: #c9d1d9;
-        --nav-bg: #161b22;
-        --nav-link: #c9d1d9;
-        --nav-hover: #58a6ff;
-        --header-bg: #161b22;
-        --footer-bg: #161b22;
-        --accent: #58a6ff;
-        --card-bg: #21262d;
-      }
-    }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      scroll-behavior: smooth;
-    }
-    header {
-      background-color: var(--header-bg);
-      color: #fff;
-      padding: 1.5rem 1rem;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    header img {
-      width: 80px;
-      height: auto;
-      margin-bottom: 1rem;
-    }
-    header h1 {
-      font-size: 2rem;
-      font-weight: 700;
-    }
-    .menu-toggle {
-      display: none;
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.5rem;
-      margin-left: auto;
-      cursor: pointer;
-    }
-    nav {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      background-color: var(--nav-bg);
-      padding: 1rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    nav a {
-      color: var(--nav-link);
-      margin: 0.5rem 1rem;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s;
-    }
-    nav a:hover,
-    nav a.active {
-      color: var(--nav-hover);
-    }
-    .hero {
-      background-image: url('https://images.unsplash.com/photo-1581093588401-14e3c204c1b4');
-      background-size: cover;
-      background-position: center;
-      padding: 6rem 2rem;
-      text-align: center;
-      color: #fff;
-    }
-    .hero h2 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-    .hero p {
-      font-size: 1.2rem;
-    }
-    .hero .cta {
-      margin-top: 1rem;
-      display: inline-block;
-      background-color: var(--accent);
-      color: var(--header-bg);
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .section {
-      padding: 4rem 2rem;
-      max-width: 1000px;
-      margin: auto;
-      animation: fadeIn 1s ease-in-out;
-    }
-    .section h3 {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-      color: var(--header-bg);
-    }
-    .section p {
-      font-size: 1rem;
-      line-height: 1.6;
-    }
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-    .project-card {
-      background: var(--card-bg);
-      border-radius: 8px;
-      padding: 1rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      transition: transform 0.3s;
-    }
-    .project-card:hover {
-      transform: translateY(-5px);
-    }
-    .project-card h4 {
-      margin-bottom: 0.5rem;
-      color: var(--nav-bg);
-    }
-    footer {
-      background-color: var(--footer-bg);
-      color: #fff;
-      text-align: center;
-      padding: 1.5rem;
-      margin-top: 2rem;
-      font-size: 0.9rem;
-    }
-    footer a {
-      color: var(--accent);
-      text-decoration: none;
-      margin: 0 0.5rem;
-    }
-    #scrollTopBtn {
-      display: none;
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 99;
-      background-color: var(--accent);
-      color: var(--header-bg);
-      border: none;
-      padding: 10px 15px;
-      border-radius: 50%;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @media (max-width: 768px) {
-      .menu-toggle {
-        display: block;
-      }
-      nav {
-        flex-direction: column;
-        align-items: center;
-      }
-      nav a {
-        display: none;
-        margin: 0.5rem 0;
-      }
-      nav.open a {
-        display: block;
-      }
-    }
-  </style>
-</head>
-
-<header>
-  <img src="/3-OIL-icon-blue.svg" alt="OIL Logo" />
-  <h1>Obuda Innovation Laboratory (OIL)</h1>
-</header>
-
-<nav id="navbar" role="navigation" aria-label="Main Navigation">
-  <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle navigation" aria-controls="navbar">☰</button>
-  <a href="#about">About</a>
-  <a href="#research">Research</a>
-  <a href="#projects">Projects</a>
-  <a href="#contact">Contact</a>
-</nav>
-
-<section class="hero">
-  <h2 id="typewriter"></h2>
-  <p>At OIL, we drive scientific progress by fostering creativity and collaboration in cutting-edge research.</p>
-  <a href="#projects" class="cta">Explore Projects</a>
-</section>
-
-<section id="about" class="section">
-  <h3>About Us</h3>
-  <p>The Obuda Innovation Laboratory (OIL) is a multidisciplinary research and development center focused on advancing science, technology, and engineering. Based at Obuda University, we bring together experts and students to solve real-world problems through innovative solutions.</p>
-</section>
-
-<section id="research" class="section">
-  <h3>Our Research</h3>
-  <p>Our research spans areas such as artificial intelligence, robotics, renewable energy, and biomedical engineering. We aim to bridge academia and industry by applying research findings to practical applications that improve lives.</p>
-</section>
-
-<section id="projects" class="section">
-  <h3>Projects</h3>
-  <div class="projects-grid">
-    <div class="project-card">
-      <h4>Smart Mobility AI</h4>
-      <p>Autonomous vehicle system powered by real-time object detection and route optimization.</p>
+<main>
+  <div class="system-clock" aria-live="polite">
+    <div class="system-clock__row">
+      <span class="clock-label">Local</span>
+      <time id="clock-local" aria-label="Local time">--:--:--</time>
     </div>
-    <div class="project-card">
-      <h4>Green Energy Analytics</h4>
-      <p>AI-based models to predict and optimize solar and wind energy production.</p>
-    </div>
-    <div class="project-card">
-      <h4>Medical Robotics</h4>
-      <p>Robotic arms used in precise surgical procedures with haptic feedback integration.</p>
+    <div class="system-clock__row">
+      <span class="clock-label">Budapest</span>
+      <time id="clock-budapest" aria-label="Budapest time">--:--:--</time>
     </div>
   </div>
-</section>
+  <header>
+    <h1 class="sr-only">Obuda Innovation Laboratory</h1>
+    <pre aria-hidden="true">{logo}</pre>
+  </header>
 
-<section id="contact" class="section">
-  <h3>Contact Us</h3>
-  <p>Email: contact@oil-obuda.hu<br />
-     Address: Obuda University, Budapest, Hungary<br />
-     Phone: +36 1 666 6666</p>
-</section>
+  <section class="info-panels" aria-label="Site information panels">
+    <details>
+      <summary>About</summary>
+      <p>
+        Obuda Innovation Laboratory (O.I.L.) is Obuda University's premier destination for both International and Domestic students. We are the first and only English-First collective within the university and pride ourselves on our cooperation. We are open to students, professors and community members of all technical backgrounds.
+      <p>
+        Founded in 2024 OIL is in the heart of Budapest, and strives to become the city's premier makerspace and research hub, innovating across all sectors. Across Big Data, AI, Robotics, Business, IOT, Design, Art and more, our team of students are ready to take on any challenge you or your business faces. Contact us with your project ideas today!
+      </p>
+    </details>
+    <details>
+      <summary>How we work</summary>
+    <h3>Your Time, Your Projects</h3>
+      <p>
+        At OIL, you've got freedom. Got a class project? Bring it. Need a quiet corner to study? Done. Want to tinker with a 3D printer? Go for it. Whether it's a weird prototype, a custom part, or a full start-up idea, the space is yours.
+      </p>
+    <h3>The Deal</h3>
+      <p>
+        We give you the gear, the space, and the protection for your ideas. In return, we ask you to kick in <b>30-40% of your time</b> for Lab Projects.
+      <br>
+        These are the big missions: cracking industrial problems, building weird machines, training AI models, or converting an old car to electric. Projects that gets OIL noticed, brings in funding, and lets us keep reaching for bigger and better things.
+      </p>
+    <h3>No Skills? No Problem!</h3>
+    <p>
+      Never touched a soldering iron? Never written a line of code? Perfect! OIL is a sandbox for trial and error. Fail forward, fail fast, fail better. Here, you'll get handed a tool, a quick crash course, and a new problem to solve right after.
+    </p>
+    </details>
+    <details>
+      <summary>Location</summary>
+      <ul>
+        <li>Headquarters: Obudai Egyetem - Banki Donat Faculty, Blaha Lujza Ter, Budapest, Hungary</li>
+      </ul>
+    </details>
+    <details>
+      <summary>Contact</summary>
+      <ul>
+        <li>Main Email: oil@oil-obuda.hu</li>
+        <li>Head of Operation's Email: gabrielcreamer@oil-obuda.hu</li>
+        <li>Head of Equipment's Email: gorjan@oil-obuda.hu</li>
+        <li>Head of Finance's Email: dragoslav@oil-obuda.hu</li>
+      </ul>
+    </details>
+    <details class="site-footer">
+      <summary>Join Us</summary>
+      <ul>
+        <li>Please follow the link to a Google Form to join OIL today!</li>
+        <button onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSdx4pLc4U_tc6f43EmEr5PYv8chOBxufopI2WGBb9e36x5uYw/viewform?usp=sharing&ouid=106583092023257242650'">Join OIL</button>
+      </ul>
+    </details>
+  </section>
 
-<footer>
-  <p>&copy; 2025 Obuda Innovation Laboratory. All rights reserved.</p>
-  <div>
-    <a href="#">LinkedIn</a>
-    <a href="#">GitHub</a>
-    <a href="#">Facebook</a>
-  </div>
+
+  <section class="news-feed" aria-labelledby="news-feed-heading">
+    <div class="news-feed__header">
+      <h2 id="news-feed-heading">oil news feed</h2>
+      <p>Updates direct from OIL</p>
+    </div>
+    <ol class="news-feed__list">
+      {newsFeed.map((item) => (
+        <li>
+          <article>
+            <header>
+              <span class="news-feed__badge">{item.status}</span>
+              <time dateTime={item.iso}>{item.stamp}</time>
+            </header>
+            <h3>{item.title}</h3>
+            <p>{item.summary}</p>
+          </article>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section aria-labelledby="boot-log-heading">
+    <h2 id="boot-log-heading" class="sr-only">Boot log entries</h2>
+    <ol class="boot-log">
+      {bootLog.map((entry) => (
+        <li>
+          <time dateTime={entry.iso}>{entry.time}</time>
+          <span>{entry.message}</span>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <footer class="site-footer" aria-labelledby="footer-heading">
+    <h2 id="footer-heading" class="sr-only">Codex lab footer navigation</h2>
+    <div class="site-footer__status">
+      <span class="status-label">STATUS</span>
+      <span class="status-value">ONLINE AWAITING COMMAND</span>
+    </div>
+    <div class="site-footer__grid">
+      <section aria-label="Follow us">
+        <h3>Follow us</h3>
+        <ul>
+          <li><a href="https://www.linkedin.com/company/obuda-innovation-laboratory/" target="_blank" rel="noreferrer">LinkedIn</a></li>
+          <li><a href="https://www.instagram.com/oil_banki/?hl=en" target="_blank" rel="noreferrer">Instagram</a></li>
+          <li><a href="https://www.youtube.com" target="_blank" rel="noreferrer">YouTube</a></li>
+        </ul>
+      </section>
+      <section aria-label="Join our newsletter">
+        <h3>Join our newsletter</h3>
+        <p>Receive lab bulletins, project calls, and event invitations straight to your inbox.</p>
+        <form>
+          <label class="sr-only" for="newsletter-email">Email address</label>
+          <input
+            id="newsletter-email"
+            type="email"
+            name="email"
+            placeholder="oil@oil-obuda.hu"
+            required
+          />
+          <button type="submit">Subscribe</button>
+        </form>
+      </section>
+      <section aria-label="Lab address">
+        <h3>Lab address</h3>
+        <address>
+          Obuda Innovation Laboratory (O.I.L.)<br />
+          Csokonai utca 6 <br />
+          H-1081 Budapest<br />
+          Hungary
+        </address>
+        <div class="glitch" data-text="AUTHORIZED CHAOS ONLY">
+  AUTHORIZED CHAOS ONLY
+</div>
+      </section>
+    </div>
+  </footer>
+  <footer style="text-align:center; font-size:12px; color:#666; margin-top:20px; padding:10px;">
+  OIL 2025: All rights reserved
 </footer>
+</main>
 
-<button id="scrollTopBtn" onclick="scrollToTop()" aria-label="Scroll to top">↑</button>
+<script>
+  if (typeof window !== "undefined") {
+    const localClock = document.getElementById("clock-local");
+    const budapestClock = document.getElementById("clock-budapest");
 
-<script is:inline>
-  function toggleMenu() {
-    document.getElementById('navbar').classList.toggle('open');
-  }
-
-  window.onscroll = function () {
-    const links = document.querySelectorAll("nav a");
-    const sections = document.querySelectorAll("section.section");
-    const scrollY = window.pageYOffset;
-
-    sections.forEach((section) => {
-      const top = section.offsetTop - 120;
-      const bottom = top + section.offsetHeight;
-      const id = section.getAttribute("id");
-      if (scrollY >= top && scrollY < bottom) {
-        links.forEach(link => link.classList.remove("active"));
-        const activeLink = document.querySelector(`nav a[href='#${id}']`);
-        if (activeLink) activeLink.classList.add("active");
-      }
+    const localFormatter = new Intl.DateTimeFormat(undefined, {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
     });
 
-    document.getElementById("scrollTopBtn").style.display = scrollY > 300 ? "block" : "none";
-  };
+    const budapestFormatter = new Intl.DateTimeFormat(undefined, {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      timeZone: "Europe/Budapest",
+    });
 
-  function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone ?? "UTC";
+
+    const buildIsoFormatter = (timeZone) =>
+      new Intl.DateTimeFormat("sv-SE", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        timeZone,
+        timeZoneName: "shortOffset",
+      });
+
+    const localIsoFormatter = buildIsoFormatter(localTimeZone);
+    const budapestIsoFormatter = buildIsoFormatter("Europe/Budapest");
+
+    const isoWithOffset = (formatter, date) => {
+      const parts = Object.fromEntries(
+        formatter
+          .formatToParts(date)
+          .filter((part) => part.type !== "literal")
+          .map((part) => [part.type, part.value])
+      );
+
+      const offsetMatch = parts.timeZoneName?.match(/GMT([+-])(\d{1,2})(?::(\d{2}))?/);
+      const offset = offsetMatch
+        ? `${offsetMatch[1]}${offsetMatch[2].padStart(2, "0")}:${(offsetMatch[3] ?? "00").padStart(2, "0")}`
+        : "Z";
+
+      return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}${offset}`;
+    };
+
+    const updateClock = () => {
+      const now = new Date();
+
+      if (localClock) {
+        localClock.textContent = localFormatter.format(now);
+        localClock.dateTime = isoWithOffset(localIsoFormatter, now);
+      }
+
+      if (budapestClock) {
+        budapestClock.textContent = budapestFormatter.format(now);
+        budapestClock.dateTime = isoWithOffset(budapestIsoFormatter, now);
+      }
+    };
+
+    updateClock();
+    window.setInterval(updateClock, 1000);
   }
-
-  const text = "Empowering Innovation through Research";
-  let i = 0;
-  function typeWriter() {
-    if (i < text.length) {
-      document.getElementById("typewriter").textContent += text.charAt(i);
-      i++;
-      setTimeout(typeWriter, 50);
-    }
-  }
-  window.onload = () => {
-    typeWriter();
-  };
-
-  // Rotate title every 3 seconds
-  const titles = ["Obuda Innovation Laboratory", "OIL"];
-  let titleIndex = 0;
-  setInterval(() => {
-    document.title = titles[titleIndex % titles.length];
-    titleIndex++;
-  }, 3000);
 </script>

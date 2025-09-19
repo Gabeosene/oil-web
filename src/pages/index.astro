@@ -1,44 +1,78 @@
-<!index.astro>
-<astro lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="color-scheme" content="light dark">
-  <meta name="description" content="Obuda Innovation Laboratory (OIL) – Advancing science and innovation through interdisciplinary research at Obuda University.">
-  <title>Obuda Innovation Laboratory</title>
-  <link rel="icon" type="image/svg+xml" href="3-OIL-icon-blue.svg">
-  <link rel="icon" type="image/png" href="3-OIL-icon-blue.png">
-  <link rel="shortcut icon" href="3-OIL-icon-blue.ico" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      font-family: 'Courier New', Courier, monospace;
-      background: black;
-      color: #cccccc;
-    }
-    #logo {
-      white-space: pre;
-      padding: 2rem;
-      font-size: 0.7rem;
-    }
-    #terminal {
-      white-space: pre-line;
-      padding: 2rem;
-      font-size: 0.8rem;
-    }
-  </style>
-</head>
-<body>
-  ---
+---
+/* index.astro */
 ---
 
-<div class="boot-logo">
-  <pre><code>{String.raw`
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="description"
+      content="Obuda Innovation Laboratory (OIL) – Advancing science and innovation through interdisciplinary research at Obuda University."
+    />
+    <title>Obuda Innovation Laboratory</title>
+    <link rel="icon" type="image/svg+xml" href="3-OIL-icon-blue.svg" />
+    <link rel="icon" type="image/png" href="3-OIL-icon-blue.png" />
+    <link rel="shortcut icon" href="3-OIL-icon-blue.ico" type="image/x-icon" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: "Courier New", Courier, monospace;
+        background: #000;
+        color: #ccc;
+      }
+
+      /* Make it obvious the screen is tappable on desktop */
+      @media (pointer: fine) {
+        body {
+          cursor: pointer;
+        }
+      }
+
+      /* Full-screen clickable overlay that lets users tap/click anywhere to enter */
+      #enter-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1000000;
+        background: transparent; /* invisible but clickable */
+        display: block;
+      }
+
+      .boot-logo {
+        padding: 2rem;
+      }
+      .boot-logo pre {
+        margin: 0;
+        font-size: 0.7rem;
+        white-space: pre;
+      }
+
+      #terminal {
+        white-space: pre-line;
+        padding: 2rem;
+        font-size: 0.8rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Tap/click anywhere to enter immediately -->
+    <a id="enter-overlay" href="/oilpage" aria-label="Enter site"></a>
+
+    <div class="boot-logo">
+      <pre><code>{String.raw`
               -j|jj|jj|jj|jj|jj               
            {|jcOaddaddaddaddaddJc|j{           
         c|cOdaaaaaaaaaaaaaaaaaaaaddOcjj        
@@ -65,76 +99,83 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
            {j|cJddddddddddddddaOcj|{           
                jjjjj|jj|jj|jj|j-      
 `}</code></pre>
-</div>
+    </div>
 
-  <div id="terminal"></div>
-  <script>
-    const lines = [
-      "",
-      "Initializing Obuda Innovation Laboratory OS...",
-      "Press any key to skip booting...",
-      "[System BIOS Check]...",
-      "[✔] CPU Ready",
-      "[✔] RAM OK",
-      "[✔] Storage Drives Mounted",
-      "[✔] Network Connection Secure",
-      "",
-      "[Booting OIL Framework]...",
-      "↳ Initializing research modules...",
-      "↳ Calibrating sensor arrays...",
-      "↳ Loading machine learning models...",
-      "↳ Checking innovation pipelines...",
-      "↳ Verifying academic credentials...",
-      "",
-      "[Authenticating to Obuda University Network]...",
-      "Username: OIL_user",
-      "Password: *********",
-      "[✔] Authentication success",
-      "",
-      "[Establishing session with university brain node]...",
-      "↳ Link stable.",
-      "↳ Uplink synchronized.",
-      "",
-      "[Launching main interface]...",
-      "System ready. Welcome to the Obuda Innovation Laboratory (OIL)."
-    ];
+    <div id="terminal"></div>
 
-    const terminal = document.getElementById("terminal");
-    let lineIndex = 0;
+    <script>
+      const lines = [
+        "",
+        "Initializing Obuda Innovation Laboratory OS...",
+        "Tap anywhere or press any key to enter…",
+        "[System BIOS Check]...",
+        "[✔] CPU Ready",
+        "[✔] RAM OK",
+        "[✔] Storage Drives Mounted",
+        "[✔] Network Connection Secure",
+        "",
+        "[Booting OIL Framework]...",
+        "↳ Initializing research modules...",
+        "↳ Calibrating sensor arrays...",
+        "↳ Loading machine learning models...",
+        "↳ Checking innovation pipelines...",
+        "↳ Verifying academic credentials...",
+        "",
+        "[Authenticating to Obuda University Network]...",
+        "Username: OIL_user",
+        "Password: *********",
+        "[✔] Authentication success",
+        "",
+        "[Establishing session with university brain node]...",
+        "↳ Link stable.",
+        "↳ Uplink synchronized.",
+        "",
+        "[Launching main interface]...",
+        "System ready. Welcome to the Obuda Innovation Laboratory (OIL).",
+      ];
 
-    function getRandomDelay(min = 10, max = 35) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+      const terminal = document.getElementById("terminal");
+      let lineIndex = 0;
 
-    function typeLine() {
-      if (lineIndex < lines.length) {
-        const line = lines[lineIndex];
-        const lineElement = document.createElement("div");
-        terminal.appendChild(lineElement);
-
-        let charIndex = 0;
-        function typeChar() {
-          if (charIndex < line.length) {
-            lineElement.textContent += line.charAt(charIndex);
-            charIndex++;
-            setTimeout(typeChar, getRandomDelay());
-          } else {
-            lineIndex++;
-            setTimeout(typeLine, getRandomDelay(300, 800));
-          }
-        }
-        typeChar();
-      } else {
-        setTimeout(() => {
-          window.location.href = "/oilpage";
-        }, 2000);
+      function getRandomDelay(min = 10, max = 35) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
       }
-    }
 
-    window.onload = () => {
+      let entered = false;
+      function enter() {
+        if (entered) return;
+        entered = true;
+        // Normal navigation (keeps history)
+        window.location.assign("/oilpage");
+      }
+
+      function typeLine() {
+        if (lineIndex < lines.length) {
+          const line = lines[lineIndex];
+          const lineElement = document.createElement("div");
+          terminal.appendChild(lineElement);
+
+          let charIndex = 0;
+          (function typeChar() {
+            if (charIndex < line.length) {
+              lineElement.textContent += line.charAt(charIndex++);
+              setTimeout(typeChar, getRandomDelay());
+            } else {
+              lineIndex++;
+              setTimeout(typeLine, getRandomDelay(300, 800));
+            }
+          })();
+        } else {
+          // After boot completes, auto-enter (user can still tap/click/press key any time)
+          setTimeout(enter, 2000);
+        }
+      }
+
+      // Start immediately (script is at the end of body)
       typeLine();
-      document.addEventListener("keydown", () => window.location.href = "/oilpage");
-    };
-  </script>
-</body>
-</astro>
+
+      // Keyboard skip works even if overlay is present
+      document.addEventListener("keydown", enter);
+    </script>
+  </body>
+</html>
