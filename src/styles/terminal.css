@@ -125,10 +125,11 @@ main {
 
 /* System clock */
 .system-clock {
-  position: absolute;
+  position: absolute;                      /* stays out of flow */
   top: clamp(1rem, 4vw, 1.5rem);
   right: clamp(1rem, 4vw, 1.5rem);
   display: grid;
+  grid-auto-rows: 1fr;                     /* rows keep a steady height */
   gap: 0.5rem;
   padding: 0.75rem 1rem;
   background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.22), rgba(var(--accent-rgb), 0.4));
@@ -136,11 +137,20 @@ main {
   border-radius: 0.5rem;
   box-shadow: 0 0 1.1rem rgba(var(--accent-rgb), 0.26), 0 0 0.45rem rgba(var(--accent-gold-rgb), 0.14);
   min-width: 10.5rem;
+  height: 3.5rem;                          /* locked height */
   max-width: 90vw;
+  overflow: hidden;
+  overflow-anchor: none;                    /* clock updates won’t re-anchor scroll */
+  contain: layout paint;                    /* isolate layout/paint changes */
 }
 .system-clock__row {
-  display: flex; justify-content: space-between; align-items: baseline;
-  gap: 1rem; font-size: clamp(0.8rem, 2vw, 0.9rem); letter-spacing: 0.08em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;                      /* baseline → center to avoid vertical jiggle */
+  gap: 1rem;
+  line-height: 1;                           /* stable line box */
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+  letter-spacing: 0.08em;
 }
 .clock-label {
   text-transform: uppercase;
@@ -149,6 +159,9 @@ main {
   letter-spacing: 0.18em;
 }
 .system-clock time {
+  display: inline-block;
+  min-width: 8ch;                           /* HH:MM:SS = 8 glyphs */
+  text-align: right;
   color: var(--text-strong);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -349,9 +362,7 @@ footer { display: flex; justify-content: space-between; font-size: 0.75rem; colo
   .news-feed__list article header { flex-direction: column; align-items: flex-start; }
 
   .system-clock {
-    position: static;
-    justify-self: end;
-    margin-bottom: 0.5rem;
+    
   }
 
   .site-footer__grid { grid-template-columns: 1fr; }
@@ -405,17 +416,8 @@ footer { display: flex; justify-content: space-between; font-size: 0.75rem; colo
   text-transform: uppercase;
   color: var(--accent-gold-strong); /* match your theme */
 }
-.footer-logo-wrap {
-  display: flex;
-  align-items: center;   /* vertical centering */
-  justify-content: center; /* horizontal centering */
-}
 
-.footer-logo {
-  max-width: 120px;  /* adjust size to fit nicely */
-  height: auto;
-  opacity: 0.9;      /* optional: slight transparency */
-}
+
 /* Grid already exists in your CSS; this just adds tweaks */
 .site-footer {
   position: relative;
@@ -435,10 +437,9 @@ footer { display: flex; justify-content: space-between; font-size: 0.75rem; colo
 }
 
 .footer-logo {
-  max-width: 140px;     /* adjust to taste */
-  width: 100%;
+  width: 140px;     /* adjust to taste */
   height: auto;
-  opacity: 0.95;        /* optional */
+  display: block;       /* optional */
 }
 
 /* Newsletter spans full width under the 3 columns */
@@ -467,6 +468,8 @@ footer { display: flex; justify-content: space-between; font-size: 0.75rem; colo
 }
 .footer-logo { width: 140px; height: auto; }
 .site-footer img { display: block; max-width: 100%; }
+html, body, main, .site-footer { overflow-anchor: none; }
+
 
 
 /* Optional: debug any rogue overflow while testing */

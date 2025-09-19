@@ -359,6 +359,9 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
   if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
   }
+let _isTouchScrolling = false;
+  addEventListener('touchstart', () => { _isTouchScrolling = true; }, { passive: true });
+  addEventListener('touchend',   () => { setTimeout(() => _isTouchScrolling = false, 250); }, { passive: true });
 
   const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyeYmHt2kCQ4ybemI62-7kmbJIFNVIKtKj-wC3ot7eCsDGXg5nmYMWaG0XGfcMGOpGkMg/exec';
 
@@ -426,75 +429,67 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
 
   // 4 Reserve space prevents CLS-based snaps; also good to disable anchoring in footer
   document.querySelector('.site-footer')?.style.setProperty('overflow-anchor', 'none');
+
+  
 </script>
 
 
 <script>
   if (typeof window !== "undefined") {
-    const localClock = document.getElementById("clock-local");
+    const localClock    = document.getElementById("clock-local");
     const budapestClock = document.getElementById("clock-budapest");
 
     const localFormatter = new Intl.DateTimeFormat(undefined, {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit"
     });
-
     const budapestFormatter = new Intl.DateTimeFormat(undefined, {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      timeZone: "Europe/Budapest",
+      hour: "2-digit", minute: "2-digit", second: "2-digit",
+      timeZone: "Europe/Budapest"
     });
 
     const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone ?? "UTC";
-
-    const buildIsoFormatter = (timeZone) =>
-      new Intl.DateTimeFormat("sv-SE", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        timeZone,
-        timeZoneName: "shortOffset",
-      });
-
-    const localIsoFormatter = buildIsoFormatter(localTimeZone);
+    const buildIsoFormatter = (tz) => new Intl.DateTimeFormat("sv-SE", {
+      year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit",
+      timeZone: tz, timeZoneName: "shortOffset"
+    });
+    const localIsoFormatter    = buildIsoFormatter(localTimeZone);
     const budapestIsoFormatter = buildIsoFormatter("Europe/Budapest");
 
     const isoWithOffset = (formatter, date) => {
       const parts = Object.fromEntries(
-        formatter
-          .formatToParts(date)
-          .filter((part) => part.type !== "literal")
-          .map((part) => [part.type, part.value])
+        formatter.formatToParts(date)
+          .filter(p => p.type !== "literal")
+          .map(p => [p.type, p.value])
       );
-
-      const offsetMatch = parts.timeZoneName?.match(/GMT([+-])(\d{1,2})(?::(\d{2}))?/);
-      const offset = offsetMatch
-        ? `${offsetMatch[1]}${offsetMatch[2].padStart(2, "0")}:${(offsetMatch[3] ?? "00").padStart(2, "0")}`
-        : "Z";
-
-      return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}${offset}`;
+      const m = parts.timeZoneName?.match(/GMT([+-])(\d{1,2})(?::(\d{2}))?/);
+      const off = m ? `${m[1]}${m[2].padStart(2,"0")}:${(m[3] ?? "00").padStart(2,"0")}` : "Z";
+      return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}${off}`;
     };
 
-    const updateClock = () => {
-      const now = new Date();
+    // Gate updates while the user is touch-scrolling (prevents jank)
+    let isTouchScrolling = false;
+    addEventListener("touchstart", () => { isTouchScrolling = true; }, { passive: true });
+    addEventListener("touchend",   () => { setTimeout(() => { isTouchScrolling = false; }, 250); }, { passive: true });
 
+    const updateClock = () => {
+      if (isTouchScrolling) return; // skip this tick while the user scrolls
+      const now = new Date();
       if (localClock) {
-        localClock.textContent = localFormatter.format(now);
+        const t = localFormatter.format(now);
+        if (localClock.textContent !== t) localClock.textContent = t;
         localClock.dateTime = isoWithOffset(localIsoFormatter, now);
       }
-
       if (budapestClock) {
-        budapestClock.textContent = budapestFormatter.format(now);
+        const t = budapestFormatter.format(now);
+        if (budapestClock.textContent !== t) budapestClock.textContent = t;
         budapestClock.dateTime = isoWithOffset(budapestIsoFormatter, now);
       }
     };
 
+    // First paint, then steady 1s ticks
     updateClock();
-    window.setInterval(updateClock, 1000);
+    setInterval(updateClock, 1000);
   }
 </script>
+
