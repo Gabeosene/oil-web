@@ -92,7 +92,7 @@ body {
 
   /* mobile stability */
   -webkit-text-size-adjust: 100%;
-  overscroll-behavior-y: contain;
+  overscroll-behavior-y: none;
 }
 
 /* Main card (centered horizontally only) */
