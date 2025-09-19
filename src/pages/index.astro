@@ -1,37 +1,35 @@
----
-/* index.astro */
----
-
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="light dark" />
-    
     <meta
       name="description"
       content="Obuda Innovation Laboratory (OIL) – Advancing science and innovation through interdisciplinary research at Obuda University."
     />
     <title>Obuda Innovation Laboratory</title>
-<link rel="icon" href="/images/Solid_-_Blue-1 (1).png" type="image/x-icon" />
-  <link rel="icon" type="/images/Solid_-_Blue-1 (1).png" sizes="32x32" href="/favicon-32.png" />
-<link rel="icon" type="/images/Solid_-_Blue-1 (1).png" sizes="16x16" href="/favicon-16.png" />
-<link rel="apple-touch-icon" sizes="180x180" href="/images/Solid_-_Blue-1 (1).png">
+
+    <!-- Favicons (place files in /public/images) -->
+    <!-- Prefer SVG if you have it -->
+    <link rel="icon" href="/images/oil-favicon.svg" type="image/svg+xml" />
+    <!-- PNG fallbacks (ensure these files exist) -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16.png" />
+    <!-- Apple touch icon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
       rel="stylesheet"
     />
+
     <style>
-      html,
-      body {
+      html, body {
         margin: 0;
         padding: 0;
         width: 100%;
         height: 100%;
-        overflow: hidden;
+        overflow: hidden; /* no scroll on splash */
         font-family: "Courier New", Courier, monospace;
         background: #000;
         color: #ccc;
@@ -39,12 +37,10 @@
 
       /* Make it obvious the screen is tappable on desktop */
       @media (pointer: fine) {
-        body {
-          cursor: pointer;
-        }
+        body { cursor: pointer; }
       }
 
-      /* Full-screen clickable overlay that lets users tap/click anywhere to enter */
+      /* Full-screen clickable overlay to enter */
       #enter-overlay {
         position: fixed;
         inset: 0;
@@ -53,13 +49,11 @@
         display: block;
       }
 
-      .boot-logo {
-        padding: 2rem;
-      }
+      .boot-logo { padding: 2rem; }
       .boot-logo pre {
         margin: 0;
         font-size: 0.7rem;
-        white-space: pre;
+        white-space: pre; /* preserve ASCII shape */
       }
 
       #terminal {
@@ -69,6 +63,7 @@
       }
     </style>
   </head>
+
   <body>
     <!-- Tap/click anywhere to enter immediately -->
     <a id="enter-overlay" href="/oilpage" aria-label="Enter site"></a>
@@ -106,6 +101,7 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
     <div id="terminal"></div>
 
     <script>
+      // Boot text
       const lines = [
         "",
         "Initializing Obuda Innovation Laboratory OS...",
@@ -139,41 +135,38 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
       const terminal = document.getElementById("terminal");
       let lineIndex = 0;
 
-      function getRandomDelay(min = 10, max = 35) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-      }
+      const rand = (min = 10, max = 35) =>
+        Math.floor(Math.random() * (max - min + 1)) + min;
 
       let entered = false;
       function enter() {
         if (entered) return;
         entered = true;
-        // Normal navigation (keeps history)
         window.location.assign("/oilpage");
       }
 
       function typeLine() {
         if (lineIndex < lines.length) {
           const line = lines[lineIndex];
-          const lineElement = document.createElement("div");
-          terminal.appendChild(lineElement);
+          const el = document.createElement("div");
+          terminal.appendChild(el);
 
-          let charIndex = 0;
+          let i = 0;
           (function typeChar() {
-            if (charIndex < line.length) {
-              lineElement.textContent += line.charAt(charIndex++);
-              setTimeout(typeChar, getRandomDelay());
+            if (i < line.length) {
+              el.textContent += line.charAt(i++);
+              setTimeout(typeChar, rand());
             } else {
               lineIndex++;
-              setTimeout(typeLine, getRandomDelay(300, 800));
+              setTimeout(typeLine, rand(300, 800));
             }
           })();
         } else {
-          // After boot completes, auto-enter (user can still tap/click/press key any time)
           setTimeout(enter, 2000);
         }
       }
 
-      // Start immediately (script is at the end of body)
+      // Start typing
       typeLine();
 
       // Keyboard skip works even if overlay is present

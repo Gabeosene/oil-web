@@ -1,45 +1,15 @@
 ---
 /* oilpage.astro */
-
 import "../styles/terminal.css";
 
-
 const bootLog = [
-  {
-    time: "00:00:00.031",
-    iso: "PT0.031S",
-    message: "BOOT SEQUENCE  OIL SYSTEM BIOS v4.2",
-  },
-  {
-    time: "00:00:00.214",
-    iso: "PT0.214S",
-    message: "MEMORY BANKS CALIBRATED",
-  },
-  {
-    time: "00:00:00.402",
-    iso: "PT0.402S",
-    message: "SENSOR GRID ONLINE",
-  },
-  {
-    time: "00:00:00.655",
-    iso: "PT0.655S",
-    message: "NEURAL ROUTINES STABLE",
-  },
-  {
-    time: "00:00:00.883",
-    iso: "PT0.883S",
-    message: "FIELD OPERATIONS SYNCED",
-  },
-  {
-    time: "00:00:01.127",
-    iso: "PT1.127S",
-    message: "INIT HANDSHAKE OPERATOR LINK ESTABLISHED",
-  },
-  {
-    time: "00:00:01.512",
-    iso: "PT1.512S",
-    message: "DIAGNOSTIC SUMMARY: ALL SYSTEMS NOMINAL",
-  },
+  { time: "00:00:00.031", iso: "PT0.031S", message: "BOOT SEQUENCE  OIL SYSTEM BIOS v4.2" },
+  { time: "00:00:00.214", iso: "PT0.214S", message: "MEMORY BANKS CALIBRATED" },
+  { time: "00:00:00.402", iso: "PT0.402S", message: "SENSOR GRID ONLINE" },
+  { time: "00:00:00.655", iso: "PT0.655S", message: "NEURAL ROUTINES STABLE" },
+  { time: "00:00:00.883", iso: "PT0.883S", message: "FIELD OPERATIONS SYNCED" },
+  { time: "00:00:01.127", iso: "PT1.127S", message: "INIT HANDSHAKE OPERATOR LINK ESTABLISHED" },
+  { time: "00:00:01.512", iso: "PT1.512S", message: "DIAGNOSTIC SUMMARY: ALL SYSTEMS NOMINAL" },
 ];
 
 const newsFeed = [
@@ -47,43 +17,31 @@ const newsFeed = [
     iso: "2025-09-18",
     stamp: "9 SEPTEMBER 2025",
     title: "Website is Live!",
-    summary:
-      "After a lot of fighting with our internal systems, our website is finally online. Please enjoy :)",
+    summary: "After a lot of fighting with our internal systems, our website is finally online. Please enjoy :)",
     status: "OIL Internal",
   },
-  //{
-  //  iso: "2025-09-16",
-  //  stamp: "28 2024",
-  //  title: "Thermal analytics firmware pushed",
-  //  summary:
-   //   "Latest firmware bundle tightens predictive thresholds on heat exchangers, cutting false alarms by 18% in test simulations.",
-   // status: "Firmware",
-  //},
- // {
-  //  iso: "2024-04-10",
-  //  stamp: "10 APR 2024",
-  //  title: "Lab clean room expansion commissioned",
-  //  summary:
-  //    "Clean room wing now operational with dual-spectrum diagnostics benches to accelerate composite fluid research cycles.",
-  //  status: "Infrastructure",
-  //},
 ];
-
 ---
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="light dark">
-  <meta name="description" content="Obuda Innovation Laboratory (OIL) – Advancing science and innovation through interdisciplinary research at Obuda University.">
-  <link rel="icon" href="/images/Solid_-_Blue-1 (1).png" type="image/x-icon" />
-  <link rel="icon" type="/images/Solid_-_Blue-1 (1).png" sizes="32x32" href="/images/Solid_-_Blue-1 (1).png" />
-<link rel="icon" type="/images/Solid_-_Blue-1 (1).png" sizes="16x16" href="/images/Solid_-_Blue-1 (1).png" />
-<link rel="apple-touch-icon" sizes="180x180" href="/images/Solid_-_Blue-1 (1).png">
+  <meta name="color-scheme" content="light dark" />
+  <meta name="description" content="Obuda Innovation Laboratory (OIL) – Advancing science and innovation through interdisciplinary research at Obuda University." />
+
   <title>Obuda Innovation Laboratory</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Favicons (ensure these files exist in /public/images) -->
+  <link rel="icon" href="/images/oil-favicon.svg" type="image/svg+xml" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
 </head>
 
 <main>
+  <!-- System clock -->
   <div class="system-clock" aria-live="polite">
     <div class="system-clock__row">
       <span class="clock-label">Local</span>
@@ -94,9 +52,10 @@ const newsFeed = [
       <time id="clock-budapest" aria-label="Budapest time">--:--:--</time>
     </div>
   </div>
+
   <header>
     <div class="fit-container logo-block">
-  <pre id="ascii-logo" class="ascii-fit-border">{String.raw`
+      <pre id="ascii-logo" class="ascii-fit-border">{String.raw`
               -j|jj|jj|jj|jj|jj               
            {|jcOaddaddaddaddaddJc|j{           
         c|cOdaaaaaaaaaaaaaaaaaaaaddOcjj        
@@ -123,81 +82,67 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
            {j|cJddddddddddddddaOcj|{           
                jjjjj|jj|jj|jj|j-               
 `}</pre>
- <h1 class="logo-title">Obuda Innovation Laboratory</h1>
-</div>
+      <h1 class="logo-title">Obuda Innovation Laboratory</h1>
+    </div>
 
-<script is:inline>
-  // Fit ASCII to its nearest .fit-container’s inner width (excludes borders)
-  function fitAsciiToContainer(el) {
-    const container = el.closest('.fit-container') || el.parentElement;
-    if (!container) return;
+    <!-- ASCII fit script -->
+    <script is:inline>
+      function fitAsciiToContainer(el) {
+        const container = el.closest('.fit-container') || el.parentElement;
+        if (!container) return;
 
-    // Available content width = container clientWidth minus its paddings
-    const cs = getComputedStyle(container);
-    const available =
-      container.clientWidth
-      - parseFloat(cs.paddingLeft || 0)
-      - parseFloat(cs.paddingRight || 0);
+        const cs = getComputedStyle(container);
+        const available = container.clientWidth
+          - parseFloat(cs.paddingLeft || 0)
+          - parseFloat(cs.paddingRight || 0);
 
-    // Get longest line (columns)
-    const lines = el.textContent.replace(/\r/g, '').split('\n');
-    const cols = Math.max(1, ...lines.map(l => l.length));
+        const lines = el.textContent.replace(/\r/g, '').split('\n');
+        const cols = Math.max(1, ...lines.map(l => l.length));
 
-    // Measure width of "cols" monospace characters at 100px to get px/char accurately
-    const probe = document.createElement('span');
-    probe.style.visibility = 'hidden';
-    probe.style.position = 'absolute';
-    probe.style.whiteSpace = 'pre';
-    probe.style.fontFamily = getComputedStyle(el).fontFamily;
-    probe.style.fontSize = '100px';
-    probe.textContent = '0'.repeat(cols);
-    document.body.appendChild(probe);
-    const widthAt100 = probe.getBoundingClientRect().width || 1;
-    probe.remove();
+        const probe = document.createElement('span');
+        probe.style.visibility = 'hidden';
+        probe.style.position = 'absolute';
+        probe.style.whiteSpace = 'pre';
+        probe.style.fontFamily = getComputedStyle(el).fontFamily;
+        probe.style.fontSize = '100px';
+        probe.textContent = '0'.repeat(cols);
+        document.body.appendChild(probe);
+        const widthAt100 = probe.getBoundingClientRect().width || 1;
+        probe.remove();
 
-    // Characters per pixel at 100px => scale to available width
-    const pxPerCharAt100 = widthAt100 / cols;
-    let size = available / pxPerCharAt100; // target font-size in px
-
-    // Clamp to keep legible but always within border; adjust to your taste
-    size = Math.max(8, Math.min(28, size));
-
-    el.style.fontSize = size + 'px';
-  }
-
-  // Observe both element and container resize
-  function mountAsciiFit(root = document) {
-    const els = Array.from(root.querySelectorAll('.ascii-fit-border'));
-    const ro = new ResizeObserver(entries => {
-      // Refit any observed element and its .fit-container
-      const seen = new Set();
-      for (const entry of entries) {
-        const el = entry.target.classList.contains('ascii-fit-border')
-          ? entry.target
-          : entry.target.querySelector?.('.ascii-fit-border');
-        if (el && !seen.has(el)) {
-          seen.add(el);
-          fitAsciiToContainer(el);
-        }
+        const pxPerCharAt100 = widthAt100 / cols;
+        let size = available / pxPerCharAt100;
+        size = Math.max(8, Math.min(28, size));
+        el.style.fontSize = size + 'px';
       }
-    });
 
-    els.forEach(el => {
-      const cont = el.closest('.fit-container') || el.parentElement;
-      ro.observe(el);
-      if (cont) ro.observe(cont);
-      // Initial fit
-      fitAsciiToContainer(el);
-    });
+      function mountAsciiFit(root = document) {
+        const els = Array.from(root.querySelectorAll('.ascii-fit-border'));
+        const ro = new ResizeObserver(entries => {
+          const seen = new Set();
+          for (const entry of entries) {
+            const el = entry.target.classList?.contains('ascii-fit-border')
+              ? entry.target
+              : entry.target.querySelector?.('.ascii-fit-border');
+            if (el && !seen.has(el)) {
+              seen.add(el);
+              fitAsciiToContainer(el);
+            }
+          }
+        });
 
-    // Also refit on orientation/zoom-ish events
-    addEventListener('orientationchange', () => els.forEach(fitAsciiToContainer));
-    addEventListener('resize', () => els.forEach(fitAsciiToContainer));
-  }
+        els.forEach(el => {
+          const cont = el.closest('.fit-container') || el.parentElement;
+          ro.observe(el);
+          if (cont) ro.observe(cont);
+          fitAsciiToContainer(el);
+        });
 
-  document.addEventListener('DOMContentLoaded', () => mountAsciiFit(document));
-</script>
-
+        addEventListener('orientationchange', () => els.forEach(fitAsciiToContainer));
+        addEventListener('resize', () => els.forEach(fitAsciiToContainer));
+      }
+      document.addEventListener('DOMContentLoaded', () => mountAsciiFit(document));
+    </script>
   </header>
 
   <section class="info-panels" aria-label="Site information panels">
@@ -205,33 +150,37 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
       <summary>About</summary>
       <p>
         Obuda Innovation Laboratory (O.I.L.) is Obuda University's premier destination for both International and Domestic students. We are the first and only English-First collective within the university and pride ourselves on our cooperation. We are open to students, professors and community members of all technical backgrounds.
+      </p>
       <p>
         Founded in 2024 OIL is in the heart of Budapest, and strives to become the city's premier makerspace and research hub, innovating across all sectors. Across Big Data, AI, Robotics, Business, IOT, Design, Art and more, our team of students are ready to take on any challenge you or your business faces. Contact us with your project ideas today!
       </p>
     </details>
+
     <details>
       <summary>How we work</summary>
-    <h3>Your Time, Your Projects</h3>
+      <h3>Your Time, Your Projects</h3>
       <p>
         At OIL, you've got freedom. Got a class project? Bring it. Need a quiet corner to study? Done. Want to tinker with a 3D printer? Go for it. Whether it's a weird prototype, a custom part, or a full start-up idea, the space is yours.
       </p>
-    <h3>The Deal</h3>
+      <h3>The Deal</h3>
       <p>
-        We give you the gear, the space, and the protection for your ideas. In return, we ask you to kick in <b>30-40% of your time</b> for Lab Projects.
-      <br>
+        We give you the gear, the space, and the protection for your ideas. In return, we ask you to kick in <b>30–40% of your time</b> for Lab Projects.
+        <br />
         These are the big missions: cracking industrial problems, building weird machines, training AI models, or converting an old car to electric. Projects that gets OIL noticed, brings in funding, and lets us keep reaching for bigger and better things.
       </p>
-    <h3>No Skills? No Problem!</h3>
-    <p>
-      Never touched a soldering iron? Never written a line of code? Perfect! OIL is a sandbox for trial and error. Fail forward, fail fast, fail better. Here, you'll get handed a tool, a quick crash course, and a new problem to solve right after.
-    </p>
+      <h3>No Skills? No Problem!</h3>
+      <p>
+        Never touched a soldering iron? Never written a line of code? Perfect! OIL is a sandbox for trial and error. Fail forward, fail fast, fail better. Here, you'll get handed a tool, a quick crash course, and a new problem to solve right after.
+      </p>
     </details>
+
     <details>
       <summary>Location</summary>
       <ul>
-        <li>Headquarters: Obudai Egyetem - Banki Donat Faculty, Blaha Lujza Ter, Budapest, Hungary</li>
+        <li>Headquarters: Obudai Egyetem - Bánki Donát Faculty, Blaha Lujza tér, Budapest, Hungary</li>
       </ul>
     </details>
+
     <details>
       <summary>Contact</summary>
       <ul>
@@ -241,15 +190,22 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
         <li>Head of Finance's Email: dragoslav@oil-obuda.hu</li>
       </ul>
     </details>
-    <details class="site-footer">
+
+    <details>
       <summary>Join Us</summary>
       <ul>
         <li>Please follow the link to a Google Form to join OIL today!</li>
-        <button onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSdx4pLc4U_tc6f43EmEr5PYv8chOBxufopI2WGBb9e36x5uYw/viewform?usp=sharing&ouid=106583092023257242650'">Join OIL</button>
+        <li>
+          <a
+            class="footer-cta"
+            href="https://docs.google.com/forms/d/e/1FAIpQLSdx4pLc4U_tc6f43EmEr5PYv8chOBxufopI2WGBb9e36x5uYw/viewform?usp=sharing&ouid=106583092023257242650"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Join OIL</a>
+        </li>
       </ul>
     </details>
   </section>
-
 
   <section class="news-feed" aria-labelledby="news-feed-heading">
     <div class="news-feed__header">
@@ -284,88 +240,69 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
     </ol>
   </section>
 
-<footer class="site-footer" aria-labelledby="footer-heading">
-  <h2 id="footer-heading" class="sr-only">Obuda Innovation Laboratory footer</h2>
+  <!-- Footer -->
+  <footer class="site-footer" aria-labelledby="footer-heading">
+    <h2 id="footer-heading" class="sr-only">Obuda Innovation Laboratory footer</h2>
 
-  <!-- status row -->
-  <div class="site-footer__status" role="status">
-    <span class="status-label">STATUS</span>
-    <span class="status-value">ONLINE AWAITING COMMAND</span>
-  </div>
+    <div class="site-footer__status" role="status">
+      <span class="status-label">STATUS</span>
+      <span class="status-value">ONLINE AWAITING COMMAND</span>
+    </div>
 
-  <!-- 3-column grid -->
-  <div class="site-footer__grid">
-    <!-- Col 1: Follow us -->
-    <section aria-label="Follow us">
-      <h3>Follow us</h3>
-      <ul>
-        <li>
-          <a href="https://www.linkedin.com/company/obuda-innovation-laboratory/"
-             target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        </li>
-        <li>
-          <a href="https://www.instagram.com/oil_banki/?hl=en"
-             target="_blank" rel="noopener noreferrer">Instagram</a>
-        </li>
-        <li>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdx4pLc4U_tc6f43EmEr5PYv8chOBxufopI2WGBb9e36x5uYw/viewform?usp=sharing&ouid=106583092023257242650"
-             target="_blank" rel="noopener noreferrer">Join Form</a>
-        </li>
-      </ul>
-    </section>
+    <div class="site-footer__grid">
+      <section aria-label="Follow us">
+        <h3>Follow us</h3>
+        <ul>
+          <li><a href="https://www.linkedin.com/company/obuda-innovation-laboratory/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a href="https://www.instagram.com/oil_banki/?hl=en" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdx4pLc4U_tc6f43EmEr5PYv8chOBxufopI2WGBb9e36x5uYw/viewform?usp=sharing&ouid=106583092023257242650" target="_blank" rel="noopener noreferrer">Join Form</a></li>
+        </ul>
+      </section>
 
-    <!-- Col 2: Center logo -->
-    <section class="footer-logo-wrap" aria-label="OIL logo">
-      <img src="/images/6-OIL-icon-gradient-blue.svg" alt="OIL Logo" class="footer-logo" />
-    </section>
+      <section class="footer-logo-wrap" aria-label="OIL logo">
+        <img src="/images/6-OIL-icon-gradient-blue.svg" alt="OIL Logo" class="footer-logo" width="140" height="140" />
+      </section>
 
-    <!-- Col 3: Lab address -->
-    <section aria-label="Lab address">
-      <h3>Lab address</h3>
-      <address>
-        Obuda Innovation Laboratory (O.I.L.)<br />
-        Csokonai utca 6<br />
-        H-1081 Budapest<br />
-        Hungary
-      </address>
-      <div class="glitch" data-text="AUTHORIZED CHAOS ONLY">AUTHORIZED CHAOS ONLY</div>
-    </section>
+      <section aria-label="Lab address">
+        <h3>Lab address</h3>
+        <address>
+          Obuda Innovation Laboratory (O.I.L.)<br />
+          Csokonai utca 6<br />
+          H-1081 Budapest<br />
+          Hungary
+        </address>
+        <div class="glitch" data-text="AUTHORIZED CHAOS ONLY">AUTHORIZED CHAOS ONLY</div>
+      </section>
 
-    <!-- Full-width: Newsletter -->
-    <section class="footer-newsletter" aria-label="Join our newsletter">
-      <h3>Join our newsletter</h3>
-      <p>Receive lab bulletins, project calls, and event invitations straight to your inbox.</p>
-      <!-- note data-ajax hook (no navigation), and action kept empty -->
-      <form id="signup-form" data-ajax novalidate>
-        <input type="email" name="email" placeholder="oil@oil-obuda.hu" required inputmode="email" />
-        <button id="signup-btn" type="submit">Subscribe</button>
-        <!-- give this a fixed space to avoid layout shifts -->
-        <span id="signup-msg" aria-live="polite" style="display:inline-block; min-width:8ch; margin-left:.5rem;"></span>
-      </form>
-    </section>
-  </div>
+      <section class="footer-newsletter" aria-label="Join our newsletter">
+        <h3>Join our newsletter</h3>
+        <p>Receive lab bulletins, project calls, and event invitations straight to your inbox.</p>
+        <form id="signup-form" data-ajax novalidate>
+          <input type="email" name="email" placeholder="oil@oil-obuda.hu" required inputmode="email" />
+          <button id="signup-btn" type="submit">Subscribe</button>
+          <span id="signup-msg" aria-live="polite" style="display:inline-block; min-width:8ch; margin-left:.5rem;"></span>
+        </form>
+      </section>
+    </div>
 
-  <!-- bottom bar -->
-  <div class="site-footer__bar" role="contentinfo">
-    <p>OIL 2025: All rights reserved</p>
-    <p>Version 2.8.1</p>
-  </div>
-</footer>
-
+    <div class="site-footer__bar" role="contentinfo">
+      <p>OIL 2025: All rights reserved</p>
+      <p>Version 2.9.1</p>
+    </div>
+  </footer>
 </main>
 
-<script>
-  // Avoid scroll restoration side-effects on SPA-ish nav
-  if ('scrollRestoration' in history) {
-    history.scrollRestoration = 'manual';
-  }
-let _isTouchScrolling = false;
+<!-- Anti-jump and newsletter JS -->
+<script is:inline>
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+  let _isTouchScrolling = false;
   addEventListener('touchstart', () => { _isTouchScrolling = true; }, { passive: true });
   addEventListener('touchend',   () => { setTimeout(() => _isTouchScrolling = false, 250); }, { passive: true });
 
   const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyeYmHt2kCQ4ybemI62-7kmbJIFNVIKtKj-wC3ot7eCsDGXg5nmYMWaG0XGfcMGOpGkMg/exec';
 
-  // 1 Kill jumps from dummy anchors anywhere on the page
+  // Kill jumps from dummy anchors
   const stopJump = (e) => {
     const a = e.target.closest && e.target.closest('a[href="#"], a[href=""]');
     if (a) { e.preventDefault(); e.stopPropagation(); return false; }
@@ -373,7 +310,7 @@ let _isTouchScrolling = false;
   document.addEventListener('click', stopJump, { passive: false });
   document.addEventListener('touchstart', stopJump, { passive: false });
 
-  // 2 AJAX the signup form (no navigation), also iOS-safe blur to prevent snap
+  // AJAX the signup form (no navigation)
   const form = document.getElementById('signup-form');
   const btn  = document.getElementById('signup-btn');
   const msg  = document.getElementById('signup-msg');
@@ -384,10 +321,8 @@ let _isTouchScrolling = false;
       e.stopPropagation();
       e.stopImmediatePropagation?.();
 
-      // iOS Safari: blur the active element (closing keyboard can snap viewport)
-      if (document.activeElement && document.activeElement.blur) {
-        document.activeElement.blur();
-      }
+      // iOS Safari: blur to avoid snap when keyboard closes
+      if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
 
       const original = btn.textContent;
       btn.disabled = true;
@@ -413,13 +348,12 @@ let _isTouchScrolling = false;
       } finally {
         setTimeout(() => { btn.disabled = false; }, 1200);
       }
-    }, { capture: true }); // capture helps beat other handlers that might navigate
+    }, { capture: true });
   }
 
-  // 3 Guard against accidental hash changes (e.g., code elsewhere sets location.hash)
+  // Guard against accidental hash jumps
   window.addEventListener('hashchange', (e) => {
-    if (!location.hash) return; // ignore normal cases
-    // If hash target doesn't exist, prevent the default scroll-to-top jump
+    if (!location.hash) return;
     const id = location.hash.slice(1);
     if (!document.getElementById(id)) {
       e.preventDefault?.();
@@ -427,69 +361,58 @@ let _isTouchScrolling = false;
     }
   });
 
-  // 4 Reserve space prevents CLS-based snaps; also good to disable anchoring in footer
+  // Disable anchoring on footer
   document.querySelector('.site-footer')?.style.setProperty('overflow-anchor', 'none');
-
-  
 </script>
 
-
-<script>
+<!-- Clock JS (scroll-safe) -->
+<script is:inline>
   if (typeof window !== "undefined") {
     const localClock    = document.getElementById("clock-local");
     const budapestClock = document.getElementById("clock-budapest");
 
-    const localFormatter = new Intl.DateTimeFormat(undefined, {
-      hour: "2-digit", minute: "2-digit", second: "2-digit"
-    });
+    const localFormatter = new Intl.DateTimeFormat(undefined, { hour: "2-digit", minute: "2-digit", second: "2-digit" });
     const budapestFormatter = new Intl.DateTimeFormat(undefined, {
       hour: "2-digit", minute: "2-digit", second: "2-digit",
       timeZone: "Europe/Budapest"
     });
 
     const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone ?? "UTC";
-    const buildIsoFormatter = (tz) => new Intl.DateTimeFormat("sv-SE", {
+    const buildIso = (tz) => new Intl.DateTimeFormat("sv-SE", {
       year: "numeric", month: "2-digit", day: "2-digit",
       hour: "2-digit", minute: "2-digit", second: "2-digit",
       timeZone: tz, timeZoneName: "shortOffset"
     });
-    const localIsoFormatter    = buildIsoFormatter(localTimeZone);
-    const budapestIsoFormatter = buildIsoFormatter("Europe/Budapest");
+    const localIso = buildIso(localTimeZone);
+    const budapestIso = buildIso("Europe/Budapest");
 
-    const isoWithOffset = (formatter, date) => {
-      const parts = Object.fromEntries(
-        formatter.formatToParts(date)
-          .filter(p => p.type !== "literal")
-          .map(p => [p.type, p.value])
-      );
+    const isoWithOffset = (fmt, d) => {
+      const parts = Object.fromEntries(fmt.formatToParts(d).filter(p => p.type !== "literal").map(p => [p.type, p.value]));
       const m = parts.timeZoneName?.match(/GMT([+-])(\d{1,2})(?::(\d{2}))?/);
       const off = m ? `${m[1]}${m[2].padStart(2,"0")}:${(m[3] ?? "00").padStart(2,"0")}` : "Z";
       return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}${off}`;
     };
 
-    // Gate updates while the user is touch-scrolling (prevents jank)
     let isTouchScrolling = false;
     addEventListener("touchstart", () => { isTouchScrolling = true; }, { passive: true });
     addEventListener("touchend",   () => { setTimeout(() => { isTouchScrolling = false; }, 250); }, { passive: true });
 
     const updateClock = () => {
-      if (isTouchScrolling) return; // skip this tick while the user scrolls
+      if (isTouchScrolling) return;
       const now = new Date();
       if (localClock) {
         const t = localFormatter.format(now);
         if (localClock.textContent !== t) localClock.textContent = t;
-        localClock.dateTime = isoWithOffset(localIsoFormatter, now);
+        localClock.dateTime = isoWithOffset(localIso, now);
       }
       if (budapestClock) {
         const t = budapestFormatter.format(now);
         if (budapestClock.textContent !== t) budapestClock.textContent = t;
-        budapestClock.dateTime = isoWithOffset(budapestIsoFormatter, now);
+        budapestClock.dateTime = isoWithOffset(budapestIso, now);
       }
     };
 
-    // First paint, then steady 1s ticks
     updateClock();
     setInterval(updateClock, 1000);
   }
 </script>
-
