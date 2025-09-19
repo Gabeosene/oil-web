@@ -96,63 +96,93 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
 
     <!-- ASCII fit script -->
     <script is:inline>
-      function fitAsciiToContainer(el) {
-        const container = el.closest('.fit-container') || el.parentElement;
-        if (!container) return;
+  (function () {
+    function fitAsciiToContainer(el) {
+      const container = el.closest('.fit-container') || el.parentElement;
+      if (!container) return;
 
-        const cs = getComputedStyle(container);
-        const available =
-          container.clientWidth -
-          parseFloat(cs.paddingLeft || 0) -
-          parseFloat(cs.paddingRight || 0);
+      const cs = getComputedStyle(container);
+      const available =
+        container.clientWidth -
+        parseFloat(cs.paddingLeft || 0) -
+        parseFloat(cs.paddingRight || 0);
 
-        const lines = el.textContent.replace(/\r/g, '').split('\n');
-        const cols = Math.max(1, ...lines.map((l) => l.length));
+      const lines = el.textContent.replace(/\r/g, '').split('\n');
+      const cols = Math.max(1, ...lines.map((l) => l.length));
 
-        const probe = document.createElement('span');
-        probe.style.visibility = 'hidden';
-        probe.style.position = 'absolute';
-        probe.style.whiteSpace = 'pre';
-        probe.style.fontFamily = getComputedStyle(el).fontFamily;
-        probe.style.fontSize = '100px';
-        probe.textContent = '0'.repeat(cols);
-        document.body.appendChild(probe);
-        const widthAt100 = probe.getBoundingClientRect().width || 1;
-        probe.remove();
+      // One probe at 100px to get px/char
+      const probe = document.createElement('span');
+      probe.style.visibility = 'hidden';
+      probe.style.position = 'absolute';
+      probe.style.whiteSpace = 'pre';
+      probe.style.fontFamily = getComputedStyle(el).fontFamily;
+      probe.style.fontSize = '100px';
+      probe.textContent = '0'.repeat(cols);
+      document.body.appendChild(probe);
+      const widthAt100 = probe.getBoundingClientRect().width || 1;
+      probe.remove();
 
-        const pxPerCharAt100 = widthAt100 / cols;
-        let size = available / pxPerCharAt100;
-        size = Math.max(8, Math.min(28, size));
-        el.style.fontSize = size + 'px';
-      }
+      const pxPerCharAt100 = widthAt100 / cols;
+      let size = available / pxPerCharAt100;
+      size = Math.max(8, Math.min(28, size));
+      el.style.fontSize = size + 'px';
+    }
 
-      function mountAsciiFit(root = document) {
-        const els = Array.from(root.querySelectorAll('.ascii-fit-border'));
-        const ro = new ResizeObserver((entries) => {
-          const seen = new Set();
-          for (const entry of entries) {
-            const el = entry.target.classList?.contains('ascii-fit-border')
-              ? entry.target
-              : entry.target.querySelector?.('.ascii-fit-border');
-            if (el && !seen.has(el)) {
-              seen.add(el);
-              fitAsciiToContainer(el);
-            }
-          }
+    function mountAsciiFit(root = document) {
+      const els = Array.from(root.querySelectorAll('.ascii-fit-border'));
+      if (!els.length) return;
+
+      // Refit only when WIDTH really changed (ignore mobile URL bar height jiggle)
+      let lastWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+      let raf = 0, t = 0;
+
+      const refitAll = () => els.forEach(fitAsciiToContainer);
+
+      // Initial fit
+      refitAll();
+
+      // Observe container WIDTH changes (not height)
+      const ro = new ResizeObserver((entries) => {
+        // If width didn't change, ignore (prevents jump while scrolling on mobile)
+        const nowW = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+        if (Math.round(nowW) === Math.round(lastWidth)) return;
+        lastWidth = nowW;
+
+        // Debounce via rAF + timeout
+        cancelAnimationFrame(raf);
+        clearTimeout(t);
+        raf = requestAnimationFrame(() => {
+          t = setTimeout(refitAll, 50);
         });
+      });
 
-        els.forEach((el) => {
-          const cont = el.closest('.fit-container') || el.parentElement;
-          ro.observe(el);
-          if (cont) ro.observe(cont);
-          fitAsciiToContainer(el);
-        });
+      els.forEach((el) => {
+        const cont = el.closest('.fit-container') || el.parentElement;
+        if (cont) ro.observe(cont);
+      });
 
-        addEventListener('orientationchange', () => els.forEach(fitAsciiToContainer));
-        addEventListener('resize', () => els.forEach(fitAsciiToContainer));
+      // Also listen to WINDOW width-only changes (e.g., rotate)
+      const onVVResize = () => {
+        const nowW = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+        if (Math.round(nowW) === Math.round(lastWidth)) return;
+        lastWidth = nowW;
+        cancelAnimationFrame(raf);
+        clearTimeout(t);
+        raf = requestAnimationFrame(() => { t = setTimeout(refitAll, 50); });
+      };
+
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', onVVResize, { passive: true });
+      } else {
+        // Fallback: check width change on window resize
+        window.addEventListener('resize', onVVResize, { passive: true });
       }
-      document.addEventListener('DOMContentLoaded', () => mountAsciiFit(document));
-    </script>
+    }
+
+    document.addEventListener('DOMContentLoaded', () => mountAsciiFit(document));
+  })();
+</script>
+
   </header>
 
   <section class="info-panels" aria-label="Site information panels">
@@ -338,7 +368,7 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
 
     <div class="site-footer__bar" role="contentinfo">
       <p>OIL 2025: All rights reserved</p>
-      <p>Version 3.5.1</p>
+      <p>Version 3.6.1</p>
     </div>
   </footer>
 </main>
