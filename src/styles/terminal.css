@@ -234,6 +234,7 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   padding: 0.85rem 1.1rem;
   transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 0 0.9rem rgba(var(--accent-rgb), 0.12);
+  overflow-anchor: none;
 }
 .info-panels details[open] {
   background: var(--surface-hover);
@@ -244,6 +245,9 @@ h1 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: 0.3em; }
   list-style: none; display: flex; align-items: center; justify-content: space-between;
   gap: 1rem; cursor: pointer; color: var(--text-strong);
   font-size: clamp(0.95rem, 2.1vw, 1.05rem); letter-spacing: 0.08em; text-transform: uppercase;
+    scroll-margin-top: 0;           /* avoid auto centering on focus */
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 .info-panels summary::-webkit-details-marker { display: none; }
 .info-panels summary::after {

@@ -287,7 +287,7 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
 
     <div class="site-footer__bar" role="contentinfo">
       <p>OIL 2025: All rights reserved</p>
-      <p>Version 3.0.1</p>
+      <p>Version 3.1.1</p>
     </div>
   </footer>
 </main>
@@ -415,4 +415,30 @@ jdaadaadaaaaaada@@@@       @@@@aaaadaaaaaaadadj
     updateClock();
     setInterval(updateClock, 1000);
   }
+</script>
+<script is:inline>
+  // Keep the tapped <summary> visually in place while its <details> opens/closes
+  (function () {
+    const root = document.querySelector('.info-panels');
+    if (!root) return;
+
+    root.addEventListener('toggle', (e) => {
+      const details = e.target;
+      if (!(details instanceof HTMLDetailsElement)) return;
+
+      const summary = details.querySelector('summary');
+      if (!summary) return;
+
+      // Where was the summary before layout change?
+      const beforeTop = summary.getBoundingClientRect().top;
+      const beforeScrollY = window.scrollY;
+
+      // After layout recalculates, compute delta and adjust scroll
+      requestAnimationFrame(() => {
+        const afterTop = summary.getBoundingClientRect().top;
+        const delta = afterTop - beforeTop;
+        if (delta !== 0) window.scrollTo({ top: beforeScrollY + delta, left: 0, behavior: 'auto' });
+      });
+    }, true); // capture to run early
+  })();
 </script>
